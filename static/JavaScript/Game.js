@@ -3,6 +3,7 @@ function Game() {
     this.mouse = new Mouse();
     this.networking = new Networking();
     this.player = new Player();
+    this.otherPlayers = new OtherPlayers();
     this.canvas = document.getElementById('canvas');
     this.ctx = canvas.getContext('2d');
     this.size = 0;
@@ -31,14 +32,22 @@ function Game() {
         // Update things
         this.player.update(this.keyboard, this.size);
 
+        // Send things to server
+        this.player.updateServer(this.networking.socket);
+
         // Draw things
         this.ctx.fillStyle = 'white';
         this.ctx.fillRect(this.xOffset, this.yOffset, this.size, this.size);
 
         this.player.draw(this.ctx, this.size, this.xOffset, this.yOffset);
+        this.otherPlayers.draw(this.ctx, this.size, this.xOffset, this.yOffset);
     };
 
     this.startAnimating = () => {
         window.requestAnimationFrame(this.frame);
     };
+
+    this.networking.socket.on('player update', (id, position) => {
+        this.otherPlayers.update(id, position);
+    });
 }

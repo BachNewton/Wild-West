@@ -33,4 +33,8 @@ function Player() {
         ctx.fillStyle = 'orange';
         ctx.fillRect(this.x * size + xOffset, this.y * size + yOffset, this.scale * size, this.scale * size);
     };
+
+    this.updateServer = (socket) => {
+        socket.emit('player update', { x: this.x, y: this.y });
+    };
 }

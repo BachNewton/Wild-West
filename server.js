@@ -28,4 +28,8 @@ io.on('connection', (socket) => {
     socket.on('new player', () => {
         console.log('New player connected with ID:', socket.id);
     });
+
+    socket.on('player update', (position) => {
+        socket.broadcast.emit('player update', socket.id, position);
+    });
 });
