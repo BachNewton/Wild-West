@@ -1,8 +1,8 @@
 function Player() {
-    this.x = 0;
-    this.y = 0;
     this.speed = 0.005;
     this.scale = 0.05;
+    this.x = 0.5 - this.scale / 2;
+    this.y = 0.5 - this.scale / 2;
     this.canFire = true;
     this.fireCooldownMs = 300;
 
