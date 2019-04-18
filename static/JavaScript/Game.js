@@ -19,7 +19,6 @@ function Game() {
         this.xOffset = window.innerWidth / 2 - this.size / 2;
         this.yOffset = window.innerHeight / 2 - this.size / 2;
     };
-    this.updateCanvasSize();
 
     window.addEventListener('resize', () => {
         this.updateCanvasSize();
@@ -47,7 +46,20 @@ function Game() {
     };
 
     this.startAnimating = () => {
+        this.updateCanvasSize();
         window.requestAnimationFrame(this.frame);
+    };
+
+    document.addEventListener('keydown', (e) => {
+        if (e.code === 'Space') {
+            this.requestFullscreen();
+        }
+    });
+
+    this.requestFullscreen = () => {
+        var element = document.body;
+        element.requestFullscreen = element.requestFullscreen || element.mozRequestFullscreen || element.webkitRequestFullscreen;
+        element.requestFullscreen();
     };
 
     this.networking.socket.on('player update', (id, position) => {
