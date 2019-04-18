@@ -3,8 +3,10 @@ function Player() {
     this.y = 0;
     this.speed = 0.00001;
     this.scale = 0.05;
+    this.canFire = true;
+    this.fireCooldownMs = 300;
 
-    this.update = (keyboard, size) => {
+    this.update = (keyboard, size, shots) => {
         if (keyboard.held.KeyW) {
             this.y -= size * this.speed;
         }
@@ -27,6 +29,37 @@ function Player() {
         if (this.y + this.scale > 1) {
             this.y = 1 - this.scale;
         }
+
+        if (this.canFire && this.isIntendingToFire(keyboard.held)) {
+            this.canFire = false;
+            setTimeout(() => { this.canFire = true; }, this.fireCooldownMs);
+
+            var position = {
+                x: this.x + 0.5 * (this.scale - shots.scale),
+                y: this.y + 0.5 * (this.scale - shots.scale)
+            };
+            var velocity = { x: 0, y: 0 };
+            const SPEED = 0.00002;
+
+            if (keyboard.held.ArrowUp) {
+                velocity.y -= SPEED;
+            }
+            if (keyboard.held.ArrowLeft) {
+                velocity.x -= SPEED;
+            }
+            if (keyboard.held.ArrowDown) {
+                velocity.y += SPEED;
+            }
+            if (keyboard.held.ArrowRight) {
+                velocity.x += SPEED;
+            }
+
+            shots.add(position, velocity);
+        }
+    };
+
+    this.isIntendingToFire = (held) => {
+        return held.ArrowUp || held.ArrowLeft || held.ArrowDown || held.ArrowRight;
     };
 
     this.draw = (ctx, size, xOffset, yOffset) => {

@@ -4,6 +4,7 @@ function Game() {
     this.networking = new Networking();
     this.player = new Player();
     this.otherPlayers = new OtherPlayers();
+    this.shots = new Shots();
     this.canvas = document.getElementById('canvas');
     this.ctx = canvas.getContext('2d');
     this.size = 0;
@@ -30,7 +31,8 @@ function Game() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
         // Update things
-        this.player.update(this.keyboard, this.size);
+        this.player.update(this.keyboard, this.size, this.shots);
+        this.shots.update(this.size);
 
         // Send things to server
         this.player.updateServer(this.networking.socket);
@@ -39,6 +41,7 @@ function Game() {
         this.ctx.fillStyle = 'white';
         this.ctx.fillRect(this.xOffset, this.yOffset, this.size, this.size);
 
+        this.shots.draw(this.ctx, this.size, this.xOffset, this.yOffset);
         this.otherPlayers.draw(this.ctx, this.size, this.xOffset, this.yOffset);
         this.player.draw(this.ctx, this.size, this.xOffset, this.yOffset);
     };
