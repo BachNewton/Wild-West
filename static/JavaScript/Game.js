@@ -35,6 +35,7 @@ function Game() {
 
         // Send things to server
         this.player.updateServer(this.networking.socket);
+        this.shots.updateServer(this.networking.socket);
 
         // Draw things
         this.ctx.fillStyle = 'white';
@@ -68,5 +69,9 @@ function Game() {
 
     this.networking.socket.on('player disconnected', (id) => {
         this.otherPlayers.remove(id);
+    });
+
+    this.networking.socket.on('new shot', (position, velocity) => {
+        this.shots.addFromServer(position, velocity);
     });
 }

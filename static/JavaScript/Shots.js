@@ -1,12 +1,25 @@
 function Shots() {
     this.shots = [];
     this.scale = 0.015;
+    this.shotsForServer = [];
 
     this.add = (position, velocity) => {
-        this.shots.push({
+        var shot = {
             position: position,
             velocity: velocity
-        });
+        };
+
+        this.shots.push(shot);
+        this.shotsForServer.push(shot);
+    };
+
+    this.addFromServer = (position, velocity) => {
+        var shot = {
+            position: position,
+            velocity: velocity
+        };
+
+        this.shots.push(shot);
     };
 
     this.draw = (ctx, size, xOffset, yOffset) => {
@@ -32,5 +45,13 @@ function Shots() {
                 i--;
             }
         }
+    };
+
+    this.updateServer = (socket) => {
+        for (shot of this.shotsForServer) {
+            socket.emit('new shot', shot.position, shot.velocity);
+        }
+
+        this.shotsForServer = [];
     };
 }
