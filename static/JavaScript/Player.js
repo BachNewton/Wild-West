@@ -1,23 +1,23 @@
 function Player() {
     this.x = 0;
     this.y = 0;
-    this.speed = 0.00001;
+    this.speed = 0.005;
     this.scale = 0.05;
     this.canFire = true;
     this.fireCooldownMs = 300;
 
-    this.update = (keyboard, size, shots) => {
+    this.update = (keyboard, shots) => {
         if (keyboard.held.KeyW) {
-            this.y -= size * this.speed;
+            this.y -= this.speed;
         }
         if (keyboard.held.KeyA) {
-            this.x -= size * this.speed;
+            this.x -= this.speed;
         }
         if (keyboard.held.KeyS) {
-            this.y += size * this.speed;
+            this.y += this.speed;
         }
         if (keyboard.held.KeyD) {
-            this.x += size * this.speed;
+            this.x += this.speed;
         }
 
         this.x = Math.max(0, this.x);
@@ -39,7 +39,7 @@ function Player() {
                 y: this.y + 0.5 * (this.scale - shots.scale)
             };
             var velocity = { x: 0, y: 0 };
-            const SPEED = 0.00002;
+            const SPEED = 0.01;
 
             if (keyboard.held.ArrowUp) {
                 velocity.y -= SPEED;

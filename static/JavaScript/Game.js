@@ -30,8 +30,8 @@ function Game() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
         // Update things
-        this.player.update(this.keyboard, this.size, this.shots);
-        this.shots.update(this.size);
+        this.player.update(this.keyboard, this.shots);
+        this.shots.update();
 
         // Send things to server
         this.player.updateServer(this.networking.socket);

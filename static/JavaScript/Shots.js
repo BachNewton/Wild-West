@@ -20,12 +20,12 @@ function Shots() {
         }
     };
 
-    this.update = (size) => {
+    this.update = () => {
         for (var i = 0; i < this.shots.length; i++) {
             var shot = this.shots[i];
 
-            shot.position.x += size * shot.velocity.x;
-            shot.position.y += size * shot.velocity.y;
+            shot.position.x += shot.velocity.x;
+            shot.position.y += shot.velocity.y;
 
             if (shot.position.x + this.scale < 0 || shot.position.x > 1 || shot.position.y + this.scale < 0 || shot.position.y > 1) {
                 this.shots.splice(i, 1);
