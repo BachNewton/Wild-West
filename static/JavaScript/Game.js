@@ -1,6 +1,7 @@
 function Game() {
     this.keyboard = new Keyboard();
     this.mouse = new Mouse();
+    this.touch = new Touch();
     this.networking = new Networking();
     this.player = new Player();
     this.otherPlayers = new OtherPlayers();
