@@ -23,6 +23,7 @@ server.listen(5000, () => {
 io.on('connection', (socket) => {
     socket.on('disconnect', () => {
         console.log('Player disconnected with ID:', socket.id);
+        io.sockets.emit('player disconnected', socket.id);
     });
 
     socket.on('new player', () => {

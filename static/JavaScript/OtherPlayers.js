@@ -20,4 +20,8 @@ function OtherPlayers() {
             ctx.fillRect(x * size + xOffset, y * size + yOffset, this.scale * size, this.scale * size);
         }
     };
+
+    this.remove = (id) => {
+        delete this.players[id];
+    };
 }

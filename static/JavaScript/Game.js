@@ -39,8 +39,8 @@ function Game() {
         this.ctx.fillStyle = 'white';
         this.ctx.fillRect(this.xOffset, this.yOffset, this.size, this.size);
 
-        this.player.draw(this.ctx, this.size, this.xOffset, this.yOffset);
         this.otherPlayers.draw(this.ctx, this.size, this.xOffset, this.yOffset);
+        this.player.draw(this.ctx, this.size, this.xOffset, this.yOffset);
     };
 
     this.startAnimating = () => {
@@ -49,5 +49,9 @@ function Game() {
 
     this.networking.socket.on('player update', (id, position) => {
         this.otherPlayers.update(id, position);
+    });
+
+    this.networking.socket.on('player disconnected', (id) => {
+        this.otherPlayers.remove(id);
     });
 }
