@@ -29,13 +29,13 @@ function Game() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
         // Update things
-        this.player.update(this.keyboard);
+        this.player.update(this.keyboard, this.size);
 
         // Draw things
         this.ctx.fillStyle = 'white';
         this.ctx.fillRect(this.xOffset, this.yOffset, this.size, this.size);
 
-        this.player.draw(this.ctx, this.size);
+        this.player.draw(this.ctx, this.size, this.xOffset, this.yOffset);
     };
 
     this.startAnimating = () => {
