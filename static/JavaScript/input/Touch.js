@@ -10,9 +10,13 @@ function Touch() {
     });
 
     document.addEventListener('touchend', (e) => {
-        for (var touch of e.touches) {
-            var id = touch.identifier;
-            delete this.touches[id];
+        if (e.touches.length > 0) {
+            for (var touch of e.touches) {
+                var id = touch.identifier;
+                delete this.touches[id];
+            }
+        } else {
+            this.touches = {};
         }
     });
 

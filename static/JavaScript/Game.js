@@ -2,6 +2,7 @@ function Game() {
     this.keyboard = new Keyboard();
     this.mouse = new Mouse();
     this.touch = new Touch();
+    this.touchUI = new TouchUI();
     this.networking = new Networking();
     this.player = new Player();
     this.otherPlayers = new OtherPlayers();
@@ -28,10 +29,16 @@ function Game() {
     this.frame = () => {
         window.requestAnimationFrame(this.frame);
 
+        // If the screen was touched withed with 3 fingers
+        if ('2' in this.touch.touches) {
+            this.requestFullscreen();
+        }
+
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
         // Update things
-        this.player.update(this.keyboard, this.shots);
+        this.touchUI.update(this.touch.touches);
+        this.player.update(this.keyboard.held, this.shots);
         this.shots.update();
 
         // Send things to server
@@ -42,6 +49,7 @@ function Game() {
         this.ctx.fillStyle = 'white';
         this.ctx.fillRect(this.xOffset, this.yOffset, this.size, this.size);
 
+        this.touchUI.draw(this.ctx);
         this.shots.draw(this.ctx, this.size, this.xOffset, this.yOffset);
         this.otherPlayers.draw(this.ctx, this.size, this.xOffset, this.yOffset);
         this.player.draw(this.ctx, this.size, this.xOffset, this.yOffset);

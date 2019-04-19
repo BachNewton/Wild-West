@@ -6,17 +6,17 @@ function Player() {
     this.canFire = true;
     this.fireCooldownMs = 300;
 
-    this.update = (keyboard, shots) => {
-        if (keyboard.held.KeyW) {
+    this.update = (held, shots) => {
+        if (held.KeyW) {
             this.y -= this.speed;
         }
-        if (keyboard.held.KeyA) {
+        if (held.KeyA) {
             this.x -= this.speed;
         }
-        if (keyboard.held.KeyS) {
+        if (held.KeyS) {
             this.y += this.speed;
         }
-        if (keyboard.held.KeyD) {
+        if (held.KeyD) {
             this.x += this.speed;
         }
 
@@ -30,7 +30,7 @@ function Player() {
             this.y = 1 - this.scale;
         }
 
-        if (this.canFire && this.isIntendingToFire(keyboard.held)) {
+        if (this.canFire && this.isIntendingToFire(held)) {
             this.canFire = false;
             setTimeout(() => { this.canFire = true; }, this.fireCooldownMs);
 
@@ -41,16 +41,16 @@ function Player() {
             var velocity = { x: 0, y: 0 };
             const SPEED = 0.01;
 
-            if (keyboard.held.ArrowUp) {
+            if (held.ArrowUp) {
                 velocity.y -= SPEED;
             }
-            if (keyboard.held.ArrowLeft) {
+            if (held.ArrowLeft) {
                 velocity.x -= SPEED;
             }
-            if (keyboard.held.ArrowDown) {
+            if (held.ArrowDown) {
                 velocity.y += SPEED;
             }
-            if (keyboard.held.ArrowRight) {
+            if (held.ArrowRight) {
                 velocity.x += SPEED;
             }
 
