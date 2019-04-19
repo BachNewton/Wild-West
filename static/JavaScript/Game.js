@@ -7,6 +7,7 @@ function Game() {
     this.player = new Player();
     this.otherPlayers = new OtherPlayers();
     this.shots = new Shots();
+    this.enemies = new Enemies();
     this.canvas = document.getElementById('canvas');
     this.ctx = canvas.getContext('2d');
     this.size = 0;
@@ -34,20 +35,28 @@ function Game() {
             this.requestFullscreen();
         }
 
-        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        this.update();
+        this.updateServer();
+        this.draw();
+    };
 
-        // Update things
+    this.update = () => {
         this.touchUI.update(this.touch.touches);
         var movementVector = this.getMovementVector() || this.touchUI.getMovementVector();
         var aimVector = this.getAimVector() || this.touchUI.getAimVector();
         this.player.update(movementVector, aimVector, this.shots);
         this.shots.update();
+        this.enemies.update(this.player);
+    };
 
-        // Send things to server
+    this.updateServer = () => {
         this.player.updateServer(this.networking.socket);
         this.shots.updateServer(this.networking.socket);
+    };
 
-        // Draw things
+    this.draw = () => {
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+
         this.ctx.fillStyle = 'white';
         this.ctx.fillRect(this.xOffset, this.yOffset, this.size, this.size);
 
@@ -55,6 +64,7 @@ function Game() {
         this.shots.draw(this.ctx, this.size, this.xOffset, this.yOffset);
         this.otherPlayers.draw(this.ctx, this.size, this.xOffset, this.yOffset);
         this.player.draw(this.ctx, this.size, this.xOffset, this.yOffset);
+        this.enemies.draw(this.ctx, this.size, this.xOffset, this.yOffset);
     };
 
     this.startAnimating = () => {
