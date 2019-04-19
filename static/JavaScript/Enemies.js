@@ -6,19 +6,40 @@ function Enemies() {
     this.lastSpawnTime = performance.now();
     this.timeBetweenSpawnsMs = 5000;
 
-    this.update = (player, otherPlayers) => {
+    this.update = (player, players, shots) => {
         if (performance.now() - this.lastSpawnTime > this.timeBetweenSpawnsMs) {
             this.makeNewEnemy();
         }
 
-        this.chasePlayers(player, otherPlayers);
+        this.chasePlayers(player, players);
+        this.collisionCheck(shots);
     };
 
-    this.chasePlayers = (player, otherPlayers) => {
+    this.collisionCheck = (shots) => {
+        for (var i = 0; i < shots.shots.length; i++) {
+            for (var j = 0; j < this.enemies.length; j++) {
+                var shot = shots.shots[i];
+                var enemy = this.enemies[j];
+
+                if (shot.position.x + shots.scale > enemy.position.x && shot.position.x < enemy.position.x + this.scale && shot.position.y + shots.scale > enemy.position.y && shot.position.y < enemy.position.y + this.scale) {
+                    shots.shots.splice(i, 1);
+                    this.enemies.splice(j, 1);
+                    i--;
+                    j--;
+
+                    if (i < 0) {
+                        break;
+                    }
+                }
+            }
+        }
+    };
+
+    this.chasePlayers = (player, players) => {
         for (var enemy of this.enemies) {
-            if (enemy.target in otherPlayers.players) {
-                var x = otherPlayers.players[enemy.target].position.x;
-                var y = otherPlayers.players[enemy.target].position.y;
+            if (enemy.target in players) {
+                var x = players[enemy.target].position.x;
+                var y = players[enemy.target].position.y;
             } else {
                 var x = player.x;
                 var y = player.y;
@@ -26,7 +47,7 @@ function Enemies() {
 
             if (enemy.position.x < x) {
                 enemy.position.x += this.speed;
-            } else if (enemy.x > x) {
+            } else if (enemy.position.x > x) {
                 enemy.position.x -= this.speed;
             }
 

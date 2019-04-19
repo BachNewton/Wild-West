@@ -46,7 +46,7 @@ function Game() {
         var aimVector = this.getAimVector() || this.touchUI.getAimVector();
         this.player.update(movementVector, aimVector, this.shots);
         this.shots.update();
-        this.enemies.update(this.player, this.otherPlayers);
+        this.enemies.update(this.player, this.otherPlayers.players, this.shots);
     };
 
     this.updateServer = () => {
