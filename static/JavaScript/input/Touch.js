@@ -1,39 +1,51 @@
 function Touch() {
     this.touches = {};
 
+    this.isOn = (id) => {
+        return id in this.touches && this.touches[id].on;
+    };
+
+    this.updatePosition = (id, x, y) => {
+        this.touches[id].on = true;
+        this.touches[id].x = x;
+        this.touches[id].y = y;
+    };
+
+    this.createNewTouch = (id) => {
+        this.touches[id] = {
+            on: false,
+            x: -1,
+            y: -1
+        }
+    };
+
     document.addEventListener('touchstart', (e) => {
         for (var touch of e.touches) {
             var id = touch.identifier;
-            this.touches[id] = { x: -1, y: -1 };
+
+            if (!(id in this.touches)) {
+                this.createNewTouch(id);
+            }
+
             this.updatePosition(id, touch.clientX, touch.clientY);
         }
     });
 
     document.addEventListener('touchend', (e) => {
-        // TODO - This needs works
-        // TODO - touchend has a list of the remaining touches, not a list of the ended touches
+        // First, clear everything
+        for (var id in this.touches) {
+            this.touches[id].on = false;
+        }
 
-        if (e.touches.length > 0) {
-            for (var touch of e.touches) {
-                var id = touch.identifier;
-                delete this.touches[id];
-            }
-        } else {
-            this.touches = {};
+        // Then, add only the current touches
+        for (var touch of e.touches) {
+            this.touches[touch.identifier].on = true;
         }
     });
 
     document.addEventListener('touchmove', (e) => {
         for (var touch of e.touches) {
-            var id = touch.identifier;
-            this.updatePosition(id, touch.clientX, touch.clientY);
+            this.updatePosition(touch.identifier, touch.clientX, touch.clientY);
         }
     });
-
-    this.updatePosition = (id, x, y) => {
-        if (id in this.touches) {
-            this.touches[id].x = x;
-            this.touches[id].y = y;
-        }
-    };
 }

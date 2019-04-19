@@ -38,31 +38,32 @@ function TouchUI() {
         return vector;
     };
 
-    this.update = (touches) => {
-        if ('0' in touches) {
-            if (this.movement.on) {
-                this.movement.x = touches['0'].x;
-                this.movement.y = touches['0'].y;
-            } else {
-                this.movement.on = true;
-                this.movement.startingX = touches['0'].x;
-                this.movement.startingY = touches['0'].y;
-            }
+    this.update = (touch) => {
+        if (touch.isOn('0')) {
+            var x = touch.touches['0'].x;
+            var y = touch.touches['0'].y;
+            this.updateAxis(this.movement, x, y);
         } else {
             this.movement.on = false;
         }
 
-        if ('1' in touches) {
-            if (this.aim.on) {
-                this.aim.x = touches['1'].x;
-                this.aim.y = touches['1'].y;
-            } else {
-                this.aim.on = true;
-                this.aim.startingX = touches['1'].x;
-                this.aim.startingY = touches['1'].y;
-            }
+        if (touch.isOn('1')) {
+            var x = touch.touches['1'].x;
+            var y = touch.touches['1'].y;
+            this.updateAxis(this.aim, x, y);
         } else {
             this.aim.on = false;
+        }
+    };
+
+    this.updateAxis = (axis, x, y) => {
+        if (axis.on) {
+            axis.x = x;
+            axis.y = y;
+        } else {
+            axis.on = true;
+            axis.startingX = x;
+            axis.startingY = y;
         }
     };
 

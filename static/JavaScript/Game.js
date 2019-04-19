@@ -31,7 +31,7 @@ function Game() {
         window.requestAnimationFrame(this.frame);
 
         // If the screen was touched withed with 3 fingers
-        if ('2' in this.touch.touches) {
+        if (this.touch.isOn('2')) {
             this.requestFullscreen();
         }
 
@@ -41,7 +41,7 @@ function Game() {
     };
 
     this.update = () => {
-        this.touchUI.update(this.touch.touches);
+        this.touchUI.update(this.touch);
         var movementVector = this.getMovementVector() || this.touchUI.getMovementVector();
         var aimVector = this.getAimVector() || this.touchUI.getAimVector();
         this.player.update(movementVector, aimVector, this.shots);
