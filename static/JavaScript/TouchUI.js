@@ -19,6 +19,25 @@ function TouchUI() {
         y: -1
     };
 
+    this.getMovementVector = () => {
+        return this.getVector(this.movement);
+    };
+
+    this.getAimVector = () => {
+        return this.getVector(this.aim);
+    };
+
+    this.getVector = (axis) => {
+        var vector = { x: 0, y: 0 };
+
+        if (axis.on) {
+            vector.x = Math.min(this.ringRadius, Math.max(-this.ringRadius, axis.x - axis.startingX)) / this.ringRadius;
+            vector.y = Math.min(this.ringRadius, Math.max(-this.ringRadius, axis.y - axis.startingY)) / this.ringRadius;
+        }
+
+        return vector;
+    };
+
     this.update = (touches) => {
         if ('0' in touches) {
             if (this.movement.on) {
