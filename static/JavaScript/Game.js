@@ -38,8 +38,8 @@ function Game() {
 
         // Update things
         this.touchUI.update(this.touch.touches);
-        var movementVector = this.touchUI.getMovementVector();
-        var aimVector = this.touchUI.getAimVector();
+        var movementVector = this.getMovementVector() || this.touchUI.getMovementVector();
+        var aimVector = this.getAimVector() || this.touchUI.getAimVector();
         this.player.update(movementVector, aimVector, this.shots);
         this.shots.update();
 
@@ -60,6 +60,51 @@ function Game() {
     this.startAnimating = () => {
         this.updateCanvasSize();
         window.requestAnimationFrame(this.frame);
+    };
+
+    this.getMovementVector = () => {
+        var vector = { x: 0, y: 0 };
+        const MAX = 0.8;
+
+        if (this.keyboard.held.KeyW) {
+            vector.y = -MAX;
+        } else if (this.keyboard.held.KeyS) {
+            vector.y = MAX;
+        }
+
+        if (this.keyboard.held.KeyA) {
+            vector.x = -MAX;
+        } else if (this.keyboard.held.KeyD) {
+            vector.x = MAX;
+        }
+
+        if (vector.x !== 0 || vector.y !== 0) {
+            return vector;
+        } else {
+            return false;
+        }
+    };
+
+    this.getAimVector = () => {
+        var vector = { x: 0, y: 0 };
+
+        if (this.keyboard.held.ArrowUp) {
+            vector.y = -1;
+        } else if (this.keyboard.held.ArrowDown) {
+            vector.y = 1;
+        }
+
+        if (this.keyboard.held.ArrowLeft) {
+            vector.x = -1;
+        } else if (this.keyboard.held.ArrowRight) {
+            vector.x = 1;
+        }
+
+        if (vector.x !== 0 || vector.y !== 0) {
+            return vector;
+        } else {
+            return false;
+        }
     };
 
     document.addEventListener('keydown', (e) => {

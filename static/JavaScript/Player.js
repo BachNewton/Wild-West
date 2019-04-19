@@ -9,6 +9,11 @@ function Player() {
     this.deadZone = 0.3;
 
     this.update = (movementVector, aimVector, shots) => {
+        this.updateMovement(movementVector);
+        this.updateFiring(aimVector, shots);
+    }
+
+    this.updateMovement = (movementVector) => {
         this.x += this.speed * movementVector.x;
         this.y += this.speed * movementVector.y;
 
@@ -21,7 +26,9 @@ function Player() {
         if (this.y + this.scale > 1) {
             this.y = 1 - this.scale;
         }
+    };
 
+    this.updateFiring = (aimVector, shots) => {
         if (this.canFire && this.isIntendingToFire(aimVector)) {
             this.canFire = false;
             setTimeout(() => { this.canFire = true; }, this.fireCooldownMs);
@@ -40,7 +47,7 @@ function Player() {
 
             shots.add(position, velocity);
         }
-    }
+    };
 
     this.isIntendingToFire = (aimVector) => {
         return Math.abs(aimVector.x) > this.deadZone || Math.abs(aimVector.y) > this.deadZone;
