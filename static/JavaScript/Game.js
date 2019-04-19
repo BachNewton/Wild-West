@@ -8,6 +8,7 @@ function Game() {
     this.otherPlayers = new OtherPlayers();
     this.shots = new Shots();
     this.enemies = new Enemies();
+    this.stats = { points: 0, lives: 3 };
     this.canvas = document.getElementById('canvas');
     this.ctx = canvas.getContext('2d');
     this.size = 0;
@@ -46,7 +47,7 @@ function Game() {
         var aimVector = this.getAimVector() || this.touchUI.getAimVector();
         this.player.update(movementVector, aimVector, this.shots);
         this.shots.update();
-        this.enemies.update(this.player, this.otherPlayers.players, this.shots);
+        this.enemies.update(this.player, this.otherPlayers.players, this.shots, this.stats);
     };
 
     this.updateServer = () => {
@@ -66,6 +67,18 @@ function Game() {
         this.otherPlayers.draw(this.ctx, this.size, this.xOffset, this.yOffset);
         this.player.draw(this.ctx, this.size, this.xOffset, this.yOffset);
         this.enemies.draw(this.ctx, this.size, this.xOffset, this.yOffset);
+        this.drawHUD();
+    };
+
+    this.drawHUD = () => {
+        this.ctx.fillStyle = 'grey';
+        this.ctx.fillRect(0, 0, 140, 35);
+
+        this.ctx.font = '30px Arial';
+        this.ctx.textAlign = 'left';
+        this.ctx.textBaseline = 'top';
+        this.ctx.fillStyle = 'orange';
+        this.ctx.fillText('Points: ' + this.stats.points, 5, 5);
     };
 
     this.startAnimating = () => {

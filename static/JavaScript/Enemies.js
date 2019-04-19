@@ -6,16 +6,18 @@ function Enemies() {
     this.lastSpawnTime = performance.now();
     this.timeBetweenSpawnsMs = 5000;
 
-    this.update = (player, players, shots) => {
+    this.update = (player, players, shots, stats) => {
         if (performance.now() - this.lastSpawnTime > this.timeBetweenSpawnsMs) {
             this.makeNewEnemy();
         }
 
         this.chasePlayers(player, players);
-        this.collisionCheck(shots);
+        stats.points += this.collisionCheck(shots);
     };
 
     this.collisionCheck = (shots) => {
+        var collisions = 0;
+
         for (var i = 0; i < shots.shots.length; i++) {
             var shot = shots.shots[i];
 
@@ -27,10 +29,13 @@ function Enemies() {
                     this.enemies.splice(j, 1);
                     i--;
                     j--;
+                    collisions++;
                     break;
                 }
             }
         }
+
+        return collisions;
     };
 
     this.chasePlayers = (player, players) => {
