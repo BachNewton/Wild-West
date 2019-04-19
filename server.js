@@ -37,4 +37,8 @@ io.on('connection', (socket) => {
     socket.on('new shot', (position, velocity) => {
         socket.broadcast.emit('new shot', position, velocity);
     });
+
+    socket.on('new enemy', (position) => {
+        socket.broadcast.emit('new enemy', position, socket.id);
+    });
 });

@@ -46,12 +46,13 @@ function Game() {
         var aimVector = this.getAimVector() || this.touchUI.getAimVector();
         this.player.update(movementVector, aimVector, this.shots);
         this.shots.update();
-        this.enemies.update(this.player);
+        this.enemies.update(this.player, this.otherPlayers);
     };
 
     this.updateServer = () => {
         this.player.updateServer(this.networking.socket);
         this.shots.updateServer(this.networking.socket);
+        this.enemies.updateServer(this.networking.socket);
     };
 
     this.draw = () => {
@@ -139,5 +140,9 @@ function Game() {
 
     this.networking.socket.on('new shot', (position, velocity) => {
         this.shots.addFromServer(position, velocity);
+    });
+
+    this.networking.socket.on('new enemy', (position, target) => {
+        this.enemies.makeNewEnemyFromServer(position, target);
     });
 }
