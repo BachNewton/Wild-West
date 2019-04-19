@@ -38,7 +38,9 @@ function Game() {
 
         // Update things
         this.touchUI.update(this.touch.touches);
-        this.player.update(this.keyboard.held, this.shots);
+        var movementVector = this.touchUI.getMovementVector();
+        var aimVector = this.touchUI.getAimVector();
+        this.player.update(movementVector, aimVector, this.shots);
         this.shots.update();
 
         // Send things to server
