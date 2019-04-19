@@ -4,13 +4,19 @@ function Player() {
     this.x = 0.5 - this.scale / 2;
     this.y = 0.5 - this.scale / 2;
     this.canFire = true;
+    this.lives = 3;
+    this.isInvincible = false;
+    this.invincibilityCooldownMs = 1000;
     this.fireSpeed = 0.02;
     this.fireCooldownMs = 300;
     this.deadZone = 0.3;
 
-    this.update = (movementVector, aimVector, shots) => {
-        this.updateMovement(movementVector);
-        this.updateFiring(aimVector, shots);
+    this.update = (movementVector, aimVector, shots, enemies, collisions) => {
+        if (this.lives > 0) {
+            this.updateMovement(movementVector);
+            this.updateFiring(aimVector, shots);
+            this.collisionCheck(enemies, collisions);
+        }
     }
 
     this.updateMovement = (movementVector) => {
@@ -49,12 +55,50 @@ function Player() {
         }
     };
 
+    this.collisionCheck = (enemies, collisions) => {
+        if (this.isInvincible) {
+            return;
+        }
+
+        for (var i = 0; i < enemies.enemies.length; i++) {
+            var enemy = enemies.enemies[i];
+
+            var box1 = {
+                x: this.x,
+                y: this.y,
+                width: this.scale,
+                height: this.scale
+            };
+
+            var box2 = {
+                x: enemy.position.x,
+                y: enemy.position.y,
+                width: enemies.scale,
+                height: enemies.scale
+            };
+
+            if (collisions.isCollision(box1, box2)) {
+                this.lives--;
+                this.isInvincible = true;
+                setTimeout(() => { this.isInvincible = false; }, this.invincibilityCooldownMs);
+                return;
+            }
+        }
+    };
+
     this.isIntendingToFire = (aimVector) => {
         return Math.abs(aimVector.x) > this.deadZone || Math.abs(aimVector.y) > this.deadZone;
     };
 
     this.draw = (ctx, size, xOffset, yOffset) => {
-        ctx.fillStyle = 'orange';
+        if (this.lives <= 0) {
+            ctx.fillStyle = 'grey';
+        } else if (this.isInvincible) {
+            ctx.fillStyle = 'red';
+        } else {
+            ctx.fillStyle = 'orange';
+        }
+
         ctx.fillRect(this.x * size + xOffset, this.y * size + yOffset, this.scale * size, this.scale * size);
     };
 

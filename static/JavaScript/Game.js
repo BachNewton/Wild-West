@@ -2,13 +2,14 @@ function Game() {
     this.keyboard = new Keyboard();
     this.mouse = new Mouse();
     this.touch = new Touch();
+    this.collisions = new Collisions();
     this.touchUI = new TouchUI();
     this.networking = new Networking();
     this.player = new Player();
     this.otherPlayers = new OtherPlayers();
     this.shots = new Shots();
     this.enemies = new Enemies();
-    this.stats = { points: 0, lives: 3 };
+    this.stats = { points: 0 };
     this.canvas = document.getElementById('canvas');
     this.ctx = canvas.getContext('2d');
     this.size = 0;
@@ -45,9 +46,9 @@ function Game() {
         this.touchUI.update(this.touch);
         var movementVector = this.getMovementVector() || this.touchUI.getMovementVector();
         var aimVector = this.getAimVector() || this.touchUI.getAimVector();
-        this.player.update(movementVector, aimVector, this.shots);
+        this.player.update(movementVector, aimVector, this.shots, this.enemies, this.collisions);
         this.shots.update();
-        this.enemies.update(this.player, this.otherPlayers.players, this.shots, this.stats);
+        this.enemies.update(this.player, this.otherPlayers.players, this.shots, this.stats, this.collisions);
     };
 
     this.updateServer = () => {
@@ -63,14 +64,16 @@ function Game() {
         this.ctx.fillRect(this.xOffset, this.yOffset, this.size, this.size);
 
         this.touchUI.draw(this.ctx);
+        this.enemies.draw(this.ctx, this.size, this.xOffset, this.yOffset);
         this.shots.draw(this.ctx, this.size, this.xOffset, this.yOffset);
         this.otherPlayers.draw(this.ctx, this.size, this.xOffset, this.yOffset);
         this.player.draw(this.ctx, this.size, this.xOffset, this.yOffset);
-        this.enemies.draw(this.ctx, this.size, this.xOffset, this.yOffset);
         this.drawHUD();
     };
 
     this.drawHUD = () => {
+        const MARGIN = 5;
+
         this.ctx.fillStyle = 'grey';
         this.ctx.fillRect(0, 0, 140, 35);
 
@@ -78,7 +81,18 @@ function Game() {
         this.ctx.textAlign = 'left';
         this.ctx.textBaseline = 'top';
         this.ctx.fillStyle = 'orange';
-        this.ctx.fillText('Points: ' + this.stats.points, 5, 5);
+        this.ctx.fillText('Points: ' + this.stats.points, MARGIN, MARGIN);
+
+        this.ctx.fillStyle = 'grey';
+        const WIDTH = 120;
+        const HEIGHT = 35;
+        this.ctx.fillRect(this.canvas.width - WIDTH, 0, WIDTH, HEIGHT);
+
+        this.ctx.font = '30px Arial';
+        this.ctx.textAlign = 'right';
+        this.ctx.textBaseline = 'top';
+        this.ctx.fillStyle = 'orange';
+        this.ctx.fillText('Lives: ' + this.player.lives, this.canvas.width - MARGIN, MARGIN);
     };
 
     this.startAnimating = () => {

@@ -6,17 +6,17 @@ function Enemies() {
     this.lastSpawnTime = performance.now();
     this.timeBetweenSpawnsMs = 5000;
 
-    this.update = (player, players, shots, stats) => {
+    this.update = (player, players, shots, stats, collisions) => {
         if (performance.now() - this.lastSpawnTime > this.timeBetweenSpawnsMs) {
             this.makeNewEnemy();
         }
 
         this.chasePlayers(player, players);
-        stats.points += this.collisionCheck(shots);
+        stats.points += this.collisionCheck(shots, collisions);
     };
 
-    this.collisionCheck = (shots) => {
-        var collisions = 0;
+    this.collisionCheck = (shots, collisions) => {
+        var points = 0;
 
         for (var i = 0; i < shots.shots.length; i++) {
             var shot = shots.shots[i];
@@ -24,18 +24,32 @@ function Enemies() {
             for (var j = 0; j < this.enemies.length; j++) {
                 var enemy = this.enemies[j];
 
-                if (shot.position.x + shots.scale > enemy.position.x && shot.position.x < enemy.position.x + this.scale && shot.position.y + shots.scale > enemy.position.y && shot.position.y < enemy.position.y + this.scale) {
+                var box1 = {
+                    x: shot.position.x,
+                    y: shot.position.y,
+                    width: shots.scale,
+                    height: shots.scale
+                };
+
+                var box2 = {
+                    x: enemy.position.x,
+                    y: enemy.position.y,
+                    width: this.scale,
+                    height: this.scale
+                };
+
+                if (collisions.isCollision(box1, box2)) {
                     shots.shots.splice(i, 1);
                     this.enemies.splice(j, 1);
                     i--;
                     j--;
-                    collisions++;
+                    points++;
                     break;
                 }
             }
         }
 
-        return collisions;
+        return points;
     };
 
     this.chasePlayers = (player, players) => {
