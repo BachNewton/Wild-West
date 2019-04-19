@@ -17,8 +17,9 @@ function Enemies() {
 
     this.collisionCheck = (shots) => {
         for (var i = 0; i < shots.shots.length; i++) {
+            var shot = shots.shots[i];
+
             for (var j = 0; j < this.enemies.length; j++) {
-                var shot = shots.shots[i];
                 var enemy = this.enemies[j];
 
                 if (shot.position.x + shots.scale > enemy.position.x && shot.position.x < enemy.position.x + this.scale && shot.position.y + shots.scale > enemy.position.y && shot.position.y < enemy.position.y + this.scale) {
@@ -26,10 +27,7 @@ function Enemies() {
                     this.enemies.splice(j, 1);
                     i--;
                     j--;
-
-                    if (i < 0) {
-                        break;
-                    }
+                    break;
                 }
             }
         }
