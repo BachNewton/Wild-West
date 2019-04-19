@@ -1,0 +1,3 @@
+function Gamepad() {
+    this.controllers = {};
+}
