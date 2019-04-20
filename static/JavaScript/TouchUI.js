@@ -69,33 +69,26 @@ function TouchUI() {
 
     this.draw = (ctx) => {
         if (this.movement.on) {
-            ctx.fillStyle = 'white';
-            ctx.beginPath();
-            ctx.arc(this.movement.startingX, this.movement.startingY, this.ringRadius, 0, Math.PI * 2);
-            ctx.fill();
-            ctx.fillStyle = 'black';
-            ctx.beginPath();
-            ctx.arc(this.movement.startingX, this.movement.startingY, this.ringRadius - this.ringThickness, 0, Math.PI * 2);
-            ctx.fill();
-            ctx.fillStyle = 'purple';
-            ctx.beginPath();
-            ctx.arc(this.movement.x, this.movement.y, this.padRadius, 0, Math.PI * 2);
-            ctx.fill();
+            this.drawAxis(ctx, this.movement);
         }
 
         if (this.aim.on) {
-            ctx.fillStyle = 'white';
-            ctx.beginPath();
-            ctx.arc(this.aim.startingX, this.aim.startingY, this.ringRadius, 0, Math.PI * 2);
-            ctx.fill();
-            ctx.fillStyle = 'black';
-            ctx.beginPath();
-            ctx.arc(this.aim.startingX, this.aim.startingY, this.ringRadius - this.ringThickness, 0, Math.PI * 2);
-            ctx.fill();
-            ctx.fillStyle = 'purple';
-            ctx.beginPath();
-            ctx.arc(this.aim.x, this.aim.y, this.padRadius, 0, Math.PI * 2);
-            ctx.fill();
+            this.drawAxis(ctx, this.aim);
         }
+    };
+
+    this.drawAxis = (ctx, axis) => {
+        ctx.fillStyle = 'white';
+        ctx.beginPath();
+        ctx.arc(axis.startingX, axis.startingY, this.ringRadius, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.fillStyle = 'black';
+        ctx.beginPath();
+        ctx.arc(axis.startingX, axis.startingY, this.ringRadius - this.ringThickness, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.fillStyle = 'purple';
+        ctx.beginPath();
+        ctx.arc(axis.x, axis.y, this.padRadius, 0, Math.PI * 2);
+        ctx.fill();
     };
 }
