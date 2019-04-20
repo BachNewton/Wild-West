@@ -1,4 +1,3 @@
-- Enmey spawn rate increates over time
 - Send player states
     1. Invincibile
     2. Dead

@@ -49,11 +49,17 @@ function Enemies() {
 
                 if (collisions.isCollision(box1, box2)) {
                     shots.shots.splice(i, 1);
-                    this.enemies.splice(j, 1);
                     i--;
-                    j--;
-                    points++;
-                    this.stage++;
+
+                    enemy.hp--;
+
+                    if (enemy.hp <= 0) {
+                        this.enemies.splice(j, 1);
+                        j--;
+                        points++;
+                        this.stage++;
+                    }
+
                     break;
                 }
             }
@@ -109,7 +115,7 @@ function Enemies() {
             case this.TYPE.MEDIUM:
                 return 0.002;
             case this.TYPE.LARGE:
-                return 0.001;
+                return 0.002;
         }
 
         return 0;
@@ -130,23 +136,47 @@ function Enemies() {
 
         var enemy = {
             position: position,
-            target: 'you',
             type: this.getRandomType()
         };
 
-        this.enemies.push(enemy);
         this.enemiesForServer.push(enemy);
+
+        enemy.hp = this.getHP(enemy.type);
+        enemy.target = 'you';
+        this.enemies.push(enemy);
+    };
+
+    this.getHP = (type) => {
+        switch (type) {
+            case this.TYPE.SMALL:
+                return 1;
+            case this.TYPE.MEDIUM:
+                return 1;
+            case this.TYPE.LARGE:
+                return 5;
+        }
+
+        return 1;
     };
 
     this.getRandomType = () => {
-        return Math.floor(Math.random() * Object.keys(this.TYPE).length);
+        var chance = Math.random();
+
+        if (chance < 0.5) {
+            return this.TYPE.MEDIUM;
+        } else if (chance < 0.75) {
+            return this.TYPE.SMALL;
+        } else {
+            return this.TYPE.LARGE;
+        }
     };
 
     this.makeNewEnemyFromServer = (position, target, type) => {
         this.enemies.push({
             position: position,
             target: target,
-            type: type
+            type: type,
+            hp: this.getHP(type)
         });
     };
 
