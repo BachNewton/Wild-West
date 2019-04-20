@@ -11,6 +11,7 @@ function Game() {
     this.shots = new Shots();
     this.enemies = new Enemies();
     this.stats = { points: 0 };
+    this.gameOver = false;
     this.canvas = document.getElementById('canvas');
     this.ctx = canvas.getContext('2d');
     this.size = 0;
@@ -36,6 +37,11 @@ function Game() {
         // If the screen was touched withed with 3 fingers
         if (this.touch.isOn('2')) {
             this.requestFullscreen();
+        }
+
+        if (!this.gameOver && this.isEveryoneDead()) {
+            this.gameOver = true;
+            setTimeout(() => { this.endGame(); }, 5000);
         }
 
         this.update();
@@ -95,6 +101,43 @@ function Game() {
         this.ctx.textBaseline = 'top';
         this.ctx.fillStyle = 'orange';
         this.ctx.fillText('Lives: ' + this.player.lives, this.canvas.width - MARGIN, MARGIN);
+
+        if (this.gameOver) {
+            this.ctx.font = '60px Arial';
+            this.ctx.textAlign = 'center';
+            this.ctx.textBaseline = 'middle';
+            this.ctx.fillStyle = 'red';
+            this.ctx.fillText('GAME OVER!', this.canvas.width / 2, this.canvas.height / 2);
+        }
+    };
+
+    this.isEveryoneDead = () => {
+        if (this.player.lives > 0) {
+            return false;
+        }
+
+        for (var id in this.otherPlayers.players) {
+            var player = this.otherPlayers.players[id];
+
+            if (player.lives > 0) {
+                return false;
+            }
+        }
+
+        return true;
+    };
+
+    this.endGame = () => {
+        this.restart();
+        this.networking.socket.emit('restart');
+    };
+
+    this.restart = () => {
+        this.gameOver = false;
+        this.stats.points = 0;
+        this.player.restart();
+        this.shots.restart();
+        this.enemies.restart();
     };
 
     this.startAnimating = () => {
@@ -173,5 +216,9 @@ function Game() {
 
     this.networking.socket.on('new enemy', (position, target, type) => {
         this.enemies.makeNewEnemyFromServer(position, target, type);
+    });
+
+    this.networking.socket.on('restart', () => {
+        this.restart();
     });
 }

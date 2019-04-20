@@ -11,13 +11,19 @@ function Player() {
     this.fireCooldownMs = 300;
     this.deadZone = 0.3;
 
+    this.restart = () => {
+        this.x = 0.5 - this.scale / 2;
+        this.y = 0.5 - this.scale / 2;
+        this.lives = 3;
+    };
+
     this.update = (movementVector, aimVector, shots, enemies, collisions) => {
         if (this.lives > 0) {
             this.updateMovement(movementVector);
             this.updateFiring(aimVector, shots);
             this.collisionCheck(enemies, collisions);
         }
-    }
+    };
 
     this.updateMovement = (movementVector) => {
         this.x += this.speed * movementVector.x;

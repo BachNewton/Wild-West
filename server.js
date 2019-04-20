@@ -28,6 +28,7 @@ io.on('connection', (socket) => {
 
     socket.on('new player', () => {
         console.log('New player connected with ID:', socket.id);
+        socket.broadcast.emit('restart');
     });
 
     socket.on('player update', (data) => {
@@ -40,5 +41,9 @@ io.on('connection', (socket) => {
 
     socket.on('new enemy', (position, type) => {
         socket.broadcast.emit('new enemy', position, socket.id, type);
+    });
+
+    socket.on('restart', () => {
+        socket.broadcast.emit('restart');
     });
 });

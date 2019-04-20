@@ -3,6 +3,10 @@ function Shots() {
     this.scale = 0.015;
     this.shotsForServer = [];
 
+    this.restart = () => {
+        this.shots = [];
+    };
+
     this.add = (position, velocity) => {
         var shot = {
             position: position,

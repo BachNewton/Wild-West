@@ -9,6 +9,12 @@ function Enemies() {
     this.lastSpawnTime = performance.now();
     this.stage = 1;
 
+    this.restart = () => {
+        this.enemies = [];
+        this.lastSpawnTime = performance.now();
+        this.stage = 1;
+    };
+
     this.getTimeBetweenSpawnsMs = () => {
         // Logarithmic difficulty curve
         // Tool: https://keisan.casio.com/exec/system/14059930226691
