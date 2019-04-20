@@ -1,4 +1,5 @@
 function Game() {
+    setTimeout(() => { new Audio('/static/Sounds/backgroundMusic.ogg').play(); }, 1000);
     this.keyboard = new Keyboard();
     this.mouse = new Mouse();
     this.touch = new Touch();

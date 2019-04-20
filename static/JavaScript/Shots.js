@@ -7,22 +7,23 @@ function Shots() {
         this.shots = [];
     };
 
-    this.add = (position, velocity) => {
-        var shot = {
+    this.getNewShot = (position, velocity) => {
+        new Audio('/static/Sounds/gun.wav').play();
+
+        return {
             position: position,
             velocity: velocity
         };
+    };
 
+    this.add = (position, velocity) => {
+        var shot = this.getNewShot(position, velocity);
         this.shots.push(shot);
         this.shotsForServer.push(shot);
     };
 
     this.addFromServer = (position, velocity) => {
-        var shot = {
-            position: position,
-            velocity: velocity
-        };
-
+        var shot = this.getNewShot(position, velocity);
         this.shots.push(shot);
     };
 
