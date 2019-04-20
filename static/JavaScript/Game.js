@@ -171,7 +171,7 @@ function Game() {
         this.shots.addFromServer(position, velocity);
     });
 
-    this.networking.socket.on('new enemy', (position, target) => {
-        this.enemies.makeNewEnemyFromServer(position, target);
+    this.networking.socket.on('new enemy', (position, target, type) => {
+        this.enemies.makeNewEnemyFromServer(position, target, type);
     });
 }

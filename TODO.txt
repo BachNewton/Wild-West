@@ -1,9 +1,4 @@
-- New enmey types:
-    1. Small one, that moves fast
-    2. Big one, that moves slow
-    3. Enimies with more health
 - Enmey spawn rate increates over time
-- Gamepad support
 - Send player states
     1. Invincibile
     2. Dead
