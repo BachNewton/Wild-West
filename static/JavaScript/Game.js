@@ -2,6 +2,7 @@ function Game() {
     this.keyboard = new Keyboard();
     this.mouse = new Mouse();
     this.touch = new Touch();
+    this.gamepadManager = new GamepadManager();
     this.collisions = new Collisions();
     this.touchUI = new TouchUI();
     this.networking = new Networking();
@@ -43,9 +44,10 @@ function Game() {
     };
 
     this.update = () => {
+        this.gamepadManager.update();
         this.touchUI.update(this.touch);
-        var movementVector = this.getMovementVector() || this.touchUI.getMovementVector();
-        var aimVector = this.getAimVector() || this.touchUI.getAimVector();
+        var movementVector = this.getMovementVector() || this.gamepadManager.getMovementVector() || this.touchUI.getMovementVector();
+        var aimVector = this.getAimVector() || this.gamepadManager.getAimVector() || this.touchUI.getAimVector();
         this.player.update(movementVector, aimVector, this.shots, this.enemies, this.collisions);
         this.shots.update();
         this.enemies.update(this.player, this.otherPlayers.players, this.shots, this.stats, this.collisions);
