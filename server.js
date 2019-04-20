@@ -30,8 +30,8 @@ io.on('connection', (socket) => {
         console.log('New player connected with ID:', socket.id);
     });
 
-    socket.on('player update', (position) => {
-        socket.broadcast.emit('player update', socket.id, position);
+    socket.on('player update', (data) => {
+        socket.broadcast.emit('player update', socket.id, data);
     });
 
     socket.on('new shot', (position, velocity) => {

@@ -159,8 +159,8 @@ function Game() {
         element.requestFullscreen();
     };
 
-    this.networking.socket.on('player update', (id, position) => {
-        this.otherPlayers.update(id, position);
+    this.networking.socket.on('player update', (id, data) => {
+        this.otherPlayers.update(id, data);
     });
 
     this.networking.socket.on('player disconnected', (id) => {

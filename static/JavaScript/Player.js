@@ -103,6 +103,11 @@ function Player() {
     };
 
     this.updateServer = (socket) => {
-        socket.emit('player update', { x: this.x, y: this.y });
+        socket.emit('player update', {
+            x: this.x,
+            y: this.y,
+            isInvincible: this.isInvincible,
+            lives: this.lives
+        });
     };
 }

@@ -1,3 +1,0 @@
-- Send player states
-    1. Invincibile
-    2. Dead
