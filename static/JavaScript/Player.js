@@ -73,8 +73,8 @@ function Player() {
             var box2 = {
                 x: enemy.position.x,
                 y: enemy.position.y,
-                width: enemies.scale,
-                height: enemies.scale
+                width: enemies.getScale(enemy.type),
+                height: enemies.getScale(enemy.type)
             };
 
             if (collisions.isCollision(box1, box2)) {

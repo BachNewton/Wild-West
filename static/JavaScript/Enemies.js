@@ -7,10 +7,16 @@ function Enemies() {
         LARGE: 2
     };
     this.lastSpawnTime = performance.now();
-    this.timeBetweenSpawnsMs = 5000;
+    this.stage = 1;
+
+    this.getTimeBetweenSpawnsMs = () => {
+        // Logarithmic difficulty curve
+        // Tool: https://keisan.casio.com/exec/system/14059930226691
+        return 4833.333 + -868.589 * Math.log(this.stage);
+    };
 
     this.update = (player, players, shots, stats, collisions) => {
-        if (performance.now() - this.lastSpawnTime > this.timeBetweenSpawnsMs) {
+        if (performance.now() - this.lastSpawnTime > this.getTimeBetweenSpawnsMs()) {
             this.makeNewEnemy();
         }
 
@@ -47,6 +53,7 @@ function Enemies() {
                     i--;
                     j--;
                     points++;
+                    this.stage++;
                     break;
                 }
             }
