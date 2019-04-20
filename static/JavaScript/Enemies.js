@@ -171,9 +171,9 @@ function Enemies() {
     this.getRandomType = () => {
         var chance = Math.random();
 
-        if (chance < 0.5) {
+        if (chance < 0.6) {
             return this.TYPE.MEDIUM;
-        } else if (chance < 0.75) {
+        } else if (chance < 0.8) {
             return this.TYPE.SMALL;
         } else {
             return this.TYPE.LARGE;
