@@ -103,18 +103,10 @@ function Enemies() {
 
             var speed = this.getSpeed(enemy.type);
             var center = this.getCenter(enemy);
+            var angle = Math.atan2(y - center.y, x - center.x);
 
-            if (center.x < x) {
-                enemy.position.x += speed;
-            } else if (center.x > x) {
-                enemy.position.x -= speed;
-            }
-
-            if (center.y < y) {
-                enemy.position.y += speed;
-            } else if (center.y > y) {
-                enemy.position.y -= speed;
-            }
+            enemy.position.x += speed * Math.cos(angle);
+            enemy.position.y += speed * Math.sin(angle);
         }
     };
 
