@@ -21,12 +21,12 @@ function Enemies() {
         return 4833.333 + -868.589 * Math.log(this.stage);
     };
 
-    this.update = (player, players, shots, stats, collisions) => {
+    this.update = (player, otherPlayers, shots, stats, collisions) => {
         if (performance.now() - this.lastSpawnTime > this.getTimeBetweenSpawnsMs()) {
             this.makeNewEnemy();
         }
 
-        this.chasePlayers(player, players);
+        this.chasePlayers(player, otherPlayers);
         stats.points += this.collisionCheck(shots, collisions);
     };
 
@@ -87,31 +87,42 @@ function Enemies() {
         return 0;
     };
 
-    this.chasePlayers = (player, players) => {
+    this.chasePlayers = (player, otherPlayers) => {
         for (var enemy of this.enemies) {
-            if (enemy.target in players) {
-                var x = players[enemy.target].position.x;
-                var y = players[enemy.target].position.y;
+            if (enemy.target in otherPlayers.players) {
+                var targetPlayer = otherPlayers.players[enemy.target];
+                var playerCenter = otherPlayers.getCenter(targetPlayer);
+                var x = playerCenter.x;
+                var y = playerCenter.y;
             } else {
                 // Warning: This logic can desynch enemies on the server
-                var x = player.x;
-                var y = player.y;
+                var playerCenter = player.getCenter();
+                var x = playerCenter.x;
+                var y = playerCenter.y;
             }
 
             var speed = this.getSpeed(enemy.type);
+            var center = this.getCenter(enemy);
 
-            if (enemy.position.x < x) {
+            if (center.x < x) {
                 enemy.position.x += speed;
-            } else if (enemy.position.x > x) {
+            } else if (center.x > x) {
                 enemy.position.x -= speed;
             }
 
-            if (enemy.position.y < y) {
+            if (center.y < y) {
                 enemy.position.y += speed;
-            } else if (enemy.position.y > y) {
+            } else if (center.y > y) {
                 enemy.position.y -= speed;
             }
         }
+    };
+
+    this.getCenter = (enemy) => {
+        return {
+            x: enemy.position.x + this.getScale(enemy.type) / 2,
+            y: enemy.position.y + this.getScale(enemy.type) / 2,
+        };
     };
 
     this.getSpeed = (type) => {

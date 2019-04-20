@@ -13,6 +13,13 @@ function OtherPlayers() {
         }
     };
 
+    this.getCenter = (player) => {
+        return {
+            x: player.position.x + this.scale / 2,
+            y: player.position.y + this.scale / 2
+        };
+    };
+
     this.draw = (ctx, size, xOffset, yOffset) => {
         for (var id in this.players) {
             var player = this.players[id];

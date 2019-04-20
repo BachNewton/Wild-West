@@ -17,6 +17,13 @@ function Player() {
         this.lives = 3;
     };
 
+    this.getCenter = () => {
+        return {
+            x: this.x + this.scale / 2,
+            y: this.y + this.scale / 2
+        };
+    };
+
     this.update = (movementVector, aimVector, shots, enemies, collisions) => {
         if (this.lives > 0) {
             this.updateMovement(movementVector);
