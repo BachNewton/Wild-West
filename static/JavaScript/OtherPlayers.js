@@ -1,6 +1,6 @@
 function OtherPlayers() {
     this.players = {};
-    this.scale = 0.05;
+    this.scale = 0.1;
 
     this.update = (id, data) => {
         if (id in this.players) {

@@ -4,6 +4,9 @@ function SpriteManager(data) {
     this.image.src = data.imageSrc;
     this.width = data.width;
     this.height = data.height;
+    this.marginX = data.marginX;
+    this.marginTop = data.marginTop;
+    this.marginBottom = data.marginBottom;
     this.stage = 0;
     this.stages = 0;
     this.startingX = 0;
@@ -20,8 +23,8 @@ function SpriteManager(data) {
         }
     }, this.SPEED_MS);
 
-    this.draw = (ctx, x, y) => {
-        ctx.drawImage(this.image, this.x, this.y, this.width, this.height, x, y, this.width, this.height);
+    this.draw = (ctx, x, y, width, height) => {
+        ctx.drawImage(this.image, this.x + this.marginX, this.y + this.marginTop, this.width - 2 * this.marginX, this.height - this.marginTop - this.marginBottom, x, y, width, height);
     };
 
     this.playState = (startingX, y, stages) => {

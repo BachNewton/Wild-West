@@ -1,6 +1,6 @@
 function Player() {
     this.speed = 0.01;
-    this.scale = 0.05;
+    this.scale = 0.1;
     this.x = 0.5 - this.scale / 2;
     this.y = 0.5 - this.scale / 2;
     this.canFire = true;
@@ -33,15 +33,18 @@ function Player() {
         imageSrc: '/static/Textures/cowboy.png',
         width: 128,
         height: 128,
+        marginX: 15,
+        marginTop: 20,
+        marginBottom: 10,
         speedMs: 150
     });
 
     this.playState = () => {
         switch (this.state) {
             case this.STATE.IDLE_E:
-                return this.spriteManager.playState(0, 0 * this.spriteManager.height, 1);
+                return this.spriteManager.playState(0, 3 * this.spriteManager.height, 1);
             case this.STATE.WALKING_E:
-                return this.spriteManager.playState(0, 0 * this.spriteManager.height, 8);
+                return this.spriteManager.playState(0, 3 * this.spriteManager.height, 8);
             case this.STATE.IDLE_S:
                 return this.spriteManager.playState(0, 9 * this.spriteManager.height, 1);
             case this.STATE.WALKING_S:
@@ -210,16 +213,7 @@ function Player() {
     };
 
     this.draw = (ctx, size, xOffset, yOffset) => {
-        if (this.lives <= 0) {
-            ctx.fillStyle = 'grey';
-        } else if (this.isInvincible) {
-            ctx.fillStyle = 'red';
-        } else {
-            ctx.fillStyle = 'orange';
-        }
-
-        ctx.fillRect(this.x * size + xOffset, this.y * size + yOffset, this.scale * size, this.scale * size);
-        this.spriteManager.draw(ctx, this.x * size + xOffset, this.y * size + yOffset);
+        this.spriteManager.draw(ctx, this.x * size + xOffset, this.y * size + yOffset, this.scale * size, this.scale * size);
     };
 
     this.updateServer = (socket) => {
