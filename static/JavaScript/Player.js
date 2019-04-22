@@ -208,7 +208,8 @@ function Player() {
             x: this.x,
             y: this.y,
             isInvincible: this.isInvincible,
-            lives: this.lives
+            lives: this.lives,
+            state: this.state
         });
     };
 }
