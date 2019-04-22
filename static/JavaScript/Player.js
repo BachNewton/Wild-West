@@ -19,7 +19,8 @@ function Player() {
         IDLE_W: 4,
         WALKING_W: 5,
         IDLE_N: 6,
-        WALKING_N: 7
+        WALKING_N: 7,
+        DEAD: 8
     };
     this.spriteManager = new SpriteManager({
         imageSrc: '/static/Textures/player.png',
@@ -34,21 +35,23 @@ function Player() {
     this.playState = () => {
         switch (this.state) {
             case this.STATE.IDLE_E:
-                return this.spriteManager.playState(0, 11 * this.spriteManager.height, 1);
+                return this.spriteManager.playState(0, 11 * this.spriteManager.height, 1, false);
             case this.STATE.WALKING_E:
-                return this.spriteManager.playState(0, 11 * this.spriteManager.height, 9);
+                return this.spriteManager.playState(0, 11 * this.spriteManager.height, 9, true);
             case this.STATE.IDLE_S:
-                return this.spriteManager.playState(0, 10 * this.spriteManager.height, 1);
+                return this.spriteManager.playState(0, 10 * this.spriteManager.height, 1, false);
             case this.STATE.WALKING_S:
-                return this.spriteManager.playState(64, 10 * this.spriteManager.height, 8);
+                return this.spriteManager.playState(64, 10 * this.spriteManager.height, 8, true);
             case this.STATE.IDLE_W:
-                return this.spriteManager.playState(0, 9 * this.spriteManager.height, 1);
+                return this.spriteManager.playState(0, 9 * this.spriteManager.height, 1, false);
             case this.STATE.WALKING_W:
-                return this.spriteManager.playState(0, 9 * this.spriteManager.height, 9);
+                return this.spriteManager.playState(0, 9 * this.spriteManager.height, 9, true);
             case this.STATE.IDLE_N:
-                return this.spriteManager.playState(0, 8 * this.spriteManager.height, 1);
+                return this.spriteManager.playState(0, 8 * this.spriteManager.height, 1, false);
             case this.STATE.WALKING_N:
-                return this.spriteManager.playState(64, 8 * this.spriteManager.height, 8);
+                return this.spriteManager.playState(64, 8 * this.spriteManager.height, 8, true);
+            case this.STATE.DEAD:
+                return this.spriteManager.playState(0, 20 * this.spriteManager.height, 6, false);
         }
     };
 
@@ -56,6 +59,8 @@ function Player() {
         this.x = 0.5 - this.scale / 2;
         this.y = 0.5 - this.scale / 2;
         this.lives = 3;
+        this.state = 0;
+        this.playState();
     };
 
     this.getCenter = () => {
@@ -70,6 +75,11 @@ function Player() {
             this.updateMovement(movementVector);
             this.updateFiring(aimVector, shots);
             this.collisionCheck(enemies, collisions);
+        } else {
+            if (this.state !== this.STATE.DEAD) {
+                this.state = this.STATE.DEAD;
+                this.playState();
+            }
         }
     };
 

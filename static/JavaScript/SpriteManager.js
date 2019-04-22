@@ -12,26 +12,40 @@ function SpriteManager(data) {
     this.startingX = 0;
     this.x = 0;
     this.y = 0;
-
-    setInterval(() => {
-        this.stage++;
-        this.x += this.width;
-
-        if (this.stage >= this.stages) {
-            this.stage = 0;
-            this.x = this.startingX;
-        }
-    }, this.SPEED_MS);
+    this.loop = true;
+    this.lastStageTime = performance.now();
 
     this.draw = (ctx, x, y, width, height) => {
         ctx.drawImage(this.image, this.x + this.marginX, this.y + this.marginTop, this.width - 2 * this.marginX, this.height - this.marginTop - this.marginBottom, x, y, width, height);
+
+        if (performance.now() - this.lastStageTime > this.SPEED_MS) {
+            this.nextStage();
+        }
     };
 
-    this.playState = (startingX, y, stages) => {
+    this.playState = (startingX, y, stages, loop) => {
+        this.lastStageTime = performance.now();
         this.stage = 0;
         this.stages = stages;
         this.x = startingX;
         this.y = y;
         this.startingX = startingX;
+        this.loop = loop;
+    };
+
+    this.nextStage = () => {
+        this.lastStageTime = performance.now();
+        this.stage++;
+        this.x += this.width;
+
+        if (this.stage >= this.stages) {
+            if (this.loop) {
+                this.stage = 0;
+                this.x = this.startingX;
+            } else {
+                this.stage--;
+                this.x -= this.width;
+            }
+        }
     };
 }
