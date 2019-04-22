@@ -19,60 +19,36 @@ function Player() {
         IDLE_W: 4,
         WALKING_W: 5,
         IDLE_N: 6,
-        WALKING_N: 7,
-        IDLE_NE: 8,
-        WALKING_NE: 9,
-        IDLE_SE: 10,
-        WALKING_SE: 11,
-        IDLE_SW: 12,
-        WALKING_SW: 13,
-        IDLE_NW: 14,
-        WALKING_NW: 15
+        WALKING_N: 7
     };
     this.spriteManager = new SpriteManager({
-        imageSrc: '/static/Textures/cowboy.png',
-        width: 128,
-        height: 128,
-        marginX: 15,
-        marginTop: 20,
-        marginBottom: 10,
-        speedMs: 150
+        imageSrc: '/static/Textures/player.png',
+        width: 64,
+        height: 64,
+        marginX: 5,
+        marginTop: 10,
+        marginBottom: 0,
+        speedMs: 100
     });
 
     this.playState = () => {
         switch (this.state) {
             case this.STATE.IDLE_E:
-                return this.spriteManager.playState(0, 3 * this.spriteManager.height, 1);
+                return this.spriteManager.playState(0, 11 * this.spriteManager.height, 1);
             case this.STATE.WALKING_E:
-                return this.spriteManager.playState(0, 3 * this.spriteManager.height, 8);
+                return this.spriteManager.playState(0, 11 * this.spriteManager.height, 9);
             case this.STATE.IDLE_S:
-                return this.spriteManager.playState(0, 9 * this.spriteManager.height, 1);
+                return this.spriteManager.playState(0, 10 * this.spriteManager.height, 1);
             case this.STATE.WALKING_S:
-                return this.spriteManager.playState(0, 9 * this.spriteManager.height, 8);
+                return this.spriteManager.playState(64, 10 * this.spriteManager.height, 8);
             case this.STATE.IDLE_W:
-                return this.spriteManager.playState(0, 7 * this.spriteManager.height, 1);
+                return this.spriteManager.playState(0, 9 * this.spriteManager.height, 1);
             case this.STATE.WALKING_W:
-                return this.spriteManager.playState(0, 7 * this.spriteManager.height, 8);
+                return this.spriteManager.playState(0, 9 * this.spriteManager.height, 9);
             case this.STATE.IDLE_N:
-                return this.spriteManager.playState(0, 5 * this.spriteManager.height, 1);
-            case this.STATE.WALKING_N:
-                return this.spriteManager.playState(0, 5 * this.spriteManager.height, 8);
-            case this.STATE.IDLE_NE:
-                return this.spriteManager.playState(0, 4 * this.spriteManager.height, 1);
-            case this.STATE.WALKING_NE:
-                return this.spriteManager.playState(0, 4 * this.spriteManager.height, 8);
-            case this.STATE.IDLE_SE:
-                return this.spriteManager.playState(0, 2 * this.spriteManager.height, 1);
-            case this.STATE.WALKING_SE:
-                return this.spriteManager.playState(0, 2 * this.spriteManager.height, 8);
-            case this.STATE.IDLE_SW:
                 return this.spriteManager.playState(0, 8 * this.spriteManager.height, 1);
-            case this.STATE.WALKING_SW:
-                return this.spriteManager.playState(0, 8 * this.spriteManager.height, 8);
-            case this.STATE.IDLE_NW:
-                return this.spriteManager.playState(0, 6 * this.spriteManager.height, 1);
-            case this.STATE.WALKING_NW:
-                return this.spriteManager.playState(0, 6 * this.spriteManager.height, 8);
+            case this.STATE.WALKING_N:
+                return this.spriteManager.playState(64, 8 * this.spriteManager.height, 8);
         }
     };
 
@@ -122,7 +98,6 @@ function Player() {
             var angle = null;
         } else {
             var angle = Math.atan2(movementVector.y, movementVector.x);
-            angle = angle * (180 / Math.PI) + 180;
         }
 
         if (angle === null) {
@@ -132,7 +107,7 @@ function Player() {
                 var newState = this.state;
             }
         } else {
-            var newState = this.degreeToState(angle);
+            var newState = this.angleToState(angle);
         }
 
         if (newState !== this.state) {
@@ -141,19 +116,21 @@ function Player() {
         }
     };
 
-    this.degreeToState = (degree) => {
+    this.angleToState = (angle) => {
+        angle = angle * (180 / Math.PI) + 180;
+
         var states = [
             this.STATE.WALKING_W,
-            this.STATE.WALKING_NW,
+            this.STATE.WALKING_W,
             this.STATE.WALKING_N,
-            this.STATE.WALKING_NE,
             this.STATE.WALKING_E,
-            this.STATE.WALKING_SE,
+            this.STATE.WALKING_E,
+            this.STATE.WALKING_E,
             this.STATE.WALKING_S,
-            this.STATE.WALKING_SW
+            this.STATE.WALKING_W
         ];
 
-        return states[(Math.floor(degree / 45) % 8)];
+        return states[(Math.floor(angle / 45 + 0.5) % 8)];
     };
 
     this.updateFiring = (aimVector, shots) => {
