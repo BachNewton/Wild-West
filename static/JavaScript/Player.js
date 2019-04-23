@@ -6,7 +6,9 @@ function Player() {
     this.canFire = true;
     this.lives = 3;
     this.isInvincible = false;
-    this.invincibilityCooldownMs = 1000;
+    this.invincibilityCooldownMs = 1500;
+    this.flashingIntervalMs = 100;
+    this.drawPlayer = true;
     this.fireSpeed = 0.02;
     this.fireCooldownMs = 300;
     this.deadZone = 0.3;
@@ -189,7 +191,14 @@ function Player() {
             if (collisions.isCollision(box1, box2)) {
                 this.lives--;
                 this.isInvincible = true;
-                setTimeout(() => { this.isInvincible = false; }, this.invincibilityCooldownMs);
+                var intervalId = setInterval(() => {
+                    this.drawPlayer = this.lives > 0 ? !this.drawPlayer : true;
+                }, this.flashingIntervalMs);
+                setTimeout(() => {
+                    this.isInvincible = false;
+                    this.drawPlayer = true;
+                    clearInterval(intervalId);
+                }, this.invincibilityCooldownMs);
                 return;
             }
         }
@@ -200,16 +209,18 @@ function Player() {
     };
 
     this.draw = (ctx, size, xOffset, yOffset) => {
-        this.spriteManager.draw(ctx, this.x * size + xOffset, this.y * size + yOffset, this.scale * size, this.scale * size);
+        if (this.drawPlayer) {
+            this.spriteManager.draw(ctx, this.x * size + xOffset, this.y * size + yOffset, this.scale * size, this.scale * size);
+        }
     };
 
     this.updateServer = (socket) => {
         socket.emit('player update', {
             x: this.x,
             y: this.y,
-            isInvincible: this.isInvincible,
             lives: this.lives,
-            state: this.state
+            state: this.state,
+            drawPlayer: this.drawPlayer
         });
     };
 }
