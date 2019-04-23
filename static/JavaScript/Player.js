@@ -10,7 +10,7 @@ function Player() {
     this.flashingIntervalMs = 100;
     this.drawPlayer = true;
     this.fireSpeed = 0.02;
-    this.fireCooldownMs = 300;
+    this.fireCooldownMs = 150;
     this.deadZone = 0.3;
     this.state = 0;
     this.STATE = {

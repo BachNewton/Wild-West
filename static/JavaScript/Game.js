@@ -84,7 +84,7 @@ function Game() {
         const MARGIN = 5;
 
         this.ctx.fillStyle = 'grey';
-        this.ctx.fillRect(0, 0, 140, 35);
+        this.ctx.fillRect(0, 0, 160, 35);
 
         this.ctx.font = '30px Arial';
         this.ctx.textAlign = 'left';

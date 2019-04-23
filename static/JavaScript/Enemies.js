@@ -8,6 +8,7 @@ function Enemies() {
     };
     this.lastSpawnTime = performance.now();
     this.stage = 1;
+    setInterval(() => { this.stage++; }, 2500);
 
     this.restart = () => {
         this.enemies = [];
@@ -63,7 +64,6 @@ function Enemies() {
                         this.enemies.splice(j, 1);
                         j--;
                         points++;
-                        this.stage++;
                     }
 
                     break;
