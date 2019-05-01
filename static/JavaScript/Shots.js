@@ -38,19 +38,22 @@ function Shots() {
         }
     };
 
-    this.update = () => {
+    this.update = (bounds) => {
         for (var i = 0; i < this.shots.length; i++) {
             var shot = this.shots[i];
 
             shot.position.x += shot.velocity.x;
             shot.position.y += shot.velocity.y;
 
-            if (shot.position.x + this.scale < 0 || shot.position.x > 1 || shot.position.y + this.scale < 0 || shot.position.y > 1) {
-                // TODO - Need a new way to bound shots' positions
-                // this.shots.splice(i, 1);
-                // i--;
+            if (!this.isInBounds(shot, bounds)) {
+                this.shots.splice(i, 1);
+                i--;
             }
         }
+    };
+
+    this.isInBounds = (shot, bounds) => {
+        return shot.position.x + this.scale > bounds.leftX && shot.position.x < bounds.rightX && shot.position.y + this.scale > bounds.topY && shot.position.y < bounds.bottomY;
     };
 
     this.updateServer = (socket) => {

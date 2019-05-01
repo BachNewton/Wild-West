@@ -58,7 +58,7 @@ function Game() {
         var movementVector = this.getMovementVector() || this.gamepadManager.getMovementVector() || this.touchUI.getMovementVector();
         var aimVector = this.getAimVector() || this.gamepadManager.getAimVector() || this.touchUI.getAimVector();
         this.player.update(movementVector, aimVector, this.shots, this.enemies, this.collisions, this.bounds);
-        this.shots.update();
+        this.shots.update(this.bounds);
         this.enemies.update(this.player, this.otherPlayers, this.shots, this.stats, this.collisions);
     };
 
