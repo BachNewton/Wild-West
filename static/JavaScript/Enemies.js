@@ -22,9 +22,9 @@ function Enemies() {
         return 4833.333 + -868.589 * Math.log(this.stage);
     };
 
-    this.update = (player, otherPlayers, shots, stats, collisions) => {
+    this.update = (player, otherPlayers, shots, stats, collisions, bounds) => {
         if (performance.now() - this.lastSpawnTime > this.getTimeBetweenSpawnsMs()) {
-            this.makeNewEnemy();
+            this.makeNewEnemy(bounds);
         }
 
         this.chasePlayers(player, otherPlayers);
@@ -138,10 +138,10 @@ function Enemies() {
         this.enemiesForServer = [];
     };
 
-    this.makeNewEnemy = () => {
+    this.makeNewEnemy = (bounds) => {
         this.lastSpawnTime = performance.now();
 
-        var position = this.getStartingPosition();
+        var position = this.getStartingPosition(bounds);
 
         var enemy = {
             position: position,
@@ -189,19 +189,19 @@ function Enemies() {
         });
     };
 
-    this.getStartingPosition = () => {
+    this.getStartingPosition = (bounds) => {
         var position = {};
 
         if (Math.random() < 0.5) {
-            position.x = -0.5;
+            position.x = bounds.leftX;
         } else {
-            position.x = 1.5;
+            position.x = bounds.rightX;
         }
 
         if (Math.random() < 0.5) {
-            position.y = -0.5;
+            position.y = bounds.topY;
         } else {
-            position.y = 1.5;
+            position.y = bounds.bottomY;
         }
 
         return position;
