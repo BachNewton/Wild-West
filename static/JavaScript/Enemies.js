@@ -223,7 +223,7 @@ function Enemies() {
             case this.TYPE.SMALL:
                 return 'magenta';
             case this.TYPE.MEDIUM:
-                return 'green';
+                return 'lime';
             case this.TYPE.LARGE:
                 return 'cyan';
         }

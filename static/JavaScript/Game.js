@@ -7,6 +7,7 @@ function Game() {
     this.collisions = new Collisions();
     this.touchUI = new TouchUI();
     this.networking = new Networking();
+    this.ground = new Ground();
     this.player = new Player();
     this.otherPlayers = new OtherPlayers();
     this.shots = new Shots();
@@ -67,16 +68,22 @@ function Game() {
     };
 
     this.draw = () => {
+        this.ctx.setTransform(1, 0, 0, 1, 0, 0);
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
-        this.ctx.fillStyle = 'white';
-        this.ctx.fillRect(this.xOffset, this.yOffset, this.size, this.size);
+        this.ctx.translate(-((this.player.x + this.player.scale / 2) * this.size + this.xOffset) + this.canvas.width / 2, -((this.player.y + this.player.scale / 2) * this.size + this.yOffset) + this.canvas.height / 2);
+        this.ground.draw(this.ctx, this.size, this.xOffset, this.yOffset);
 
+        this.ctx.setTransform(1, 0, 0, 1, 0, 0);
         this.touchUI.draw(this.ctx);
+
+        this.ctx.translate(-((this.player.x + this.player.scale / 2) * this.size + this.xOffset) + this.canvas.width / 2, -((this.player.y + this.player.scale / 2) * this.size + this.yOffset) + this.canvas.height / 2);
         this.enemies.draw(this.ctx, this.size, this.xOffset, this.yOffset);
         this.shots.draw(this.ctx, this.size, this.xOffset, this.yOffset);
         this.otherPlayers.draw(this.ctx, this.size, this.xOffset, this.yOffset);
         this.player.draw(this.ctx, this.size, this.xOffset, this.yOffset);
+
+        this.ctx.setTransform(1, 0, 0, 1, 0, 0);
         this.drawHUD();
     };
 

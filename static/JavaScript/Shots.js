@@ -46,8 +46,9 @@ function Shots() {
             shot.position.y += shot.velocity.y;
 
             if (shot.position.x + this.scale < 0 || shot.position.x > 1 || shot.position.y + this.scale < 0 || shot.position.y > 1) {
-                this.shots.splice(i, 1);
-                i--;
+                // TODO - Need a new way to bound shots' positions
+                // this.shots.splice(i, 1);
+                // i--;
             }
         }
     };

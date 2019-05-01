@@ -89,7 +89,7 @@ function Player() {
         this.x += this.speed * movementVector.x;
         this.y += this.speed * movementVector.y;
 
-        this.boundPlayerPosition();
+        // TODO - Need a new way to bound the player position
         this.updateState(movementVector);
     };
 
