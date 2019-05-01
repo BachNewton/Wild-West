@@ -72,9 +72,9 @@ function Player() {
         };
     };
 
-    this.update = (movementVector, aimVector, shots, enemies, collisions) => {
+    this.update = (movementVector, aimVector, shots, enemies, collisions, bounds) => {
         if (this.lives > 0) {
-            this.updateMovement(movementVector);
+            this.updateMovement(movementVector, bounds);
             this.updateFiring(aimVector, shots);
             this.collisionCheck(enemies, collisions);
         } else {
@@ -85,23 +85,24 @@ function Player() {
         }
     };
 
-    this.updateMovement = (movementVector) => {
+    this.updateMovement = (movementVector, bounds) => {
         this.x += this.speed * movementVector.x;
         this.y += this.speed * movementVector.y;
 
-        // TODO - Need a new way to bound the player position
+        this.boundPlayerPosition(bounds);
         this.updateState(movementVector);
     };
 
-    this.boundPlayerPosition = () => {
-        this.x = Math.max(0, this.x);
-        this.y = Math.max(0, this.y);
+    this.boundPlayerPosition = (bounds) => {
+        this.x = Math.max(bounds.leftX, this.x);
+        this.y = Math.max(bounds.topY, this.y);
 
-        if (this.x + this.scale > 1) {
-            this.x = 1 - this.scale;
+        if (this.x + this.scale > bounds.rightX) {
+            this.x = bounds.rightX - this.scale;
         }
-        if (this.y + this.scale > 1) {
-            this.y = 1 - this.scale;
+
+        if (this.y + this.scale > bounds.bottomY) {
+            this.y = bounds.bottomY - this.scale;
         }
     };
 

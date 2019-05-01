@@ -13,6 +13,7 @@ function Game() {
     this.shots = new Shots();
     this.enemies = new Enemies();
     this.stats = { points: 0 };
+    this.bounds = { leftX: -0.5, rightX: 1.5, topY: -0.5, bottomY: 1.5 };
     this.gameOver = false;
     this.canvas = document.getElementById('canvas');
     this.ctx = canvas.getContext('2d');
@@ -56,7 +57,7 @@ function Game() {
         this.touchUI.update(this.touch);
         var movementVector = this.getMovementVector() || this.gamepadManager.getMovementVector() || this.touchUI.getMovementVector();
         var aimVector = this.getAimVector() || this.gamepadManager.getAimVector() || this.touchUI.getAimVector();
-        this.player.update(movementVector, aimVector, this.shots, this.enemies, this.collisions);
+        this.player.update(movementVector, aimVector, this.shots, this.enemies, this.collisions, this.bounds);
         this.shots.update();
         this.enemies.update(this.player, this.otherPlayers, this.shots, this.stats, this.collisions);
     };
@@ -71,13 +72,13 @@ function Game() {
         this.ctx.setTransform(1, 0, 0, 1, 0, 0);
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
-        this.ctx.translate(-((this.player.x + this.player.scale / 2) * this.size + this.xOffset) + this.canvas.width / 2, -((this.player.y + this.player.scale / 2) * this.size + this.yOffset) + this.canvas.height / 2);
+        this.centerCameraOnPlayer();
         this.ground.draw(this.ctx, this.size, this.xOffset, this.yOffset);
 
         this.ctx.setTransform(1, 0, 0, 1, 0, 0);
         this.touchUI.draw(this.ctx);
 
-        this.ctx.translate(-((this.player.x + this.player.scale / 2) * this.size + this.xOffset) + this.canvas.width / 2, -((this.player.y + this.player.scale / 2) * this.size + this.yOffset) + this.canvas.height / 2);
+        this.centerCameraOnPlayer();
         this.enemies.draw(this.ctx, this.size, this.xOffset, this.yOffset);
         this.shots.draw(this.ctx, this.size, this.xOffset, this.yOffset);
         this.otherPlayers.draw(this.ctx, this.size, this.xOffset, this.yOffset);
@@ -85,6 +86,10 @@ function Game() {
 
         this.ctx.setTransform(1, 0, 0, 1, 0, 0);
         this.drawHUD();
+    };
+
+    this.centerCameraOnPlayer = () => {
+        this.ctx.translate(-((this.player.x + this.player.scale / 2) * this.size + this.xOffset) + this.canvas.width / 2, -((this.player.y + this.player.scale / 2) * this.size + this.yOffset) + this.canvas.height / 2);
     };
 
     this.drawHUD = () => {
