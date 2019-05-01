@@ -13,7 +13,7 @@ function Game() {
     this.shots = new Shots();
     this.enemies = new Enemies();
     this.stats = { points: 0 };
-    this.bounds = { leftX: -0.5, rightX: 1.5, topY: -0.5, bottomY: 1.5 };
+    this.bounds = { leftX: -1, rightX: 2, topY: -1, bottomY: 2 };
     this.gameOver = false;
     this.canvas = document.getElementById('canvas');
     this.ctx = canvas.getContext('2d');
@@ -73,7 +73,7 @@ function Game() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
         this.centerCameraOnPlayer();
-        this.ground.draw(this.ctx, this.size, this.xOffset, this.yOffset);
+        this.ground.draw(this.ctx, this.size, this.xOffset, this.yOffset, this.bounds);
 
         this.ctx.setTransform(1, 0, 0, 1, 0, 0);
         this.touchUI.draw(this.ctx);
