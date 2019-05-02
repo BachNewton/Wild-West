@@ -12,6 +12,7 @@ function Game() {
     this.otherPlayers = new OtherPlayers();
     this.shots = new Shots();
     this.enemies = new Enemies();
+    this.ammo = new Ammo();
     this.stats = { points: 0 };
     this.bounds = { leftX: -1, rightX: 2, topY: -1, bottomY: 2 };
     this.gameOver = false;
@@ -59,7 +60,7 @@ function Game() {
         var aimVector = this.getAimVector() || this.gamepadManager.getAimVector() || this.touchUI.getAimVector();
         this.player.update(movementVector, aimVector, this.shots, this.enemies, this.collisions, this.bounds);
         this.shots.update(this.bounds);
-        this.enemies.update(this.player, this.otherPlayers, this.shots, this.stats, this.collisions, this.bounds);
+        this.enemies.update(this.player, this.otherPlayers, this.shots, this.stats, this.collisions, this.bounds, this.ammo);
     };
 
     this.updateServer = () => {
@@ -81,6 +82,7 @@ function Game() {
         this.centerCameraOnPlayer();
         this.enemies.draw(this.ctx, this.size, this.xOffset, this.yOffset);
         this.shots.draw(this.ctx, this.size, this.xOffset, this.yOffset);
+        this.ammo.draw(this.ctx, this.size, this.xOffset, this.yOffset);
         this.otherPlayers.draw(this.ctx, this.size, this.xOffset, this.yOffset);
         this.player.draw(this.ctx, this.size, this.xOffset, this.yOffset);
 
@@ -94,9 +96,10 @@ function Game() {
 
     this.drawHUD = () => {
         const MARGIN = 5;
+        const HEIGHT = 35;
 
         this.ctx.fillStyle = 'grey';
-        this.ctx.fillRect(0, 0, 160, 35);
+        this.ctx.fillRect(0, 0, 160, HEIGHT);
 
         this.ctx.font = '30px Arial';
         this.ctx.textAlign = 'left';
@@ -105,15 +108,22 @@ function Game() {
         this.ctx.fillText('Points: ' + this.stats.points, MARGIN, MARGIN);
 
         this.ctx.fillStyle = 'grey';
-        const WIDTH = 120;
-        const HEIGHT = 35;
-        this.ctx.fillRect(this.canvas.width - WIDTH, 0, WIDTH, HEIGHT);
+        this.ctx.fillRect(this.canvas.width - 120, 0, 120, HEIGHT);
 
         this.ctx.font = '30px Arial';
         this.ctx.textAlign = 'right';
         this.ctx.textBaseline = 'top';
         this.ctx.fillStyle = 'orange';
         this.ctx.fillText('Lives: ' + this.player.lives, this.canvas.width - MARGIN, MARGIN);
+
+        this.ctx.fillStyle = 'grey';
+        this.ctx.fillRect(this.canvas.width / 2 - 100, 0, 200, HEIGHT);
+
+        this.ctx.font = '30px Arial';
+        this.ctx.textAlign = 'center';
+        this.ctx.textBaseline = 'top';
+        this.ctx.fillStyle = 'orange';
+        this.ctx.fillText('Ammo: ' + this.player.ammo, this.canvas.width / 2, MARGIN);
 
         if (this.gameOver) {
             this.ctx.font = '60px Arial';
@@ -151,6 +161,7 @@ function Game() {
         this.player.restart();
         this.shots.restart();
         this.enemies.restart();
+        this.ammo.restart();
     };
 
     this.startAnimating = () => {

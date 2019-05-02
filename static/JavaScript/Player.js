@@ -4,6 +4,7 @@ function Player() {
     this.x = 0.5 - this.scale / 2;
     this.y = 0.5 - this.scale / 2;
     this.canFire = true;
+    this.ammo = 50;
     this.lives = 3;
     this.isInvincible = false;
     this.invincibilityCooldownMs = 1500;
@@ -61,6 +62,7 @@ function Player() {
         this.x = 0.5 - this.scale / 2;
         this.y = 0.5 - this.scale / 2;
         this.lives = 3;
+        this.ammo = 50;
         this.state = 0;
         this.playState();
     };
@@ -147,9 +149,11 @@ function Player() {
     };
 
     this.updateFiring = (aimVector, shots) => {
-        if (this.canFire && this.isIntendingToFire(aimVector)) {
+        if (this.canFire && this.ammo > 0 && this.isIntendingToFire(aimVector)) {
             this.canFire = false;
             setTimeout(() => { this.canFire = true; }, this.fireCooldownMs);
+
+            this.ammo--;
 
             var position = {
                 x: this.x + 0.5 * (this.scale - shots.scale),

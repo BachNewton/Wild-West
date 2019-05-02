@@ -22,16 +22,16 @@ function Enemies() {
         return 4833.333 + -868.589 * Math.log(this.stage);
     };
 
-    this.update = (player, otherPlayers, shots, stats, collisions, bounds) => {
+    this.update = (player, otherPlayers, shots, stats, collisions, bounds, ammo) => {
         if (performance.now() - this.lastSpawnTime > this.getTimeBetweenSpawnsMs()) {
             this.makeNewEnemy(bounds);
         }
 
         this.chasePlayers(player, otherPlayers);
-        stats.points += this.collisionCheck(shots, collisions);
+        stats.points += this.collisionCheck(shots, collisions, ammo);
     };
 
-    this.collisionCheck = (shots, collisions) => {
+    this.collisionCheck = (shots, collisions, ammo) => {
         var points = 0;
 
         for (var i = 0; i < shots.shots.length; i++) {
@@ -61,6 +61,7 @@ function Enemies() {
                     enemy.hp--;
 
                     if (enemy.hp <= 0) {
+                        ammo.add(this.getCenter(enemy));
                         this.enemies.splice(j, 1);
                         j--;
                         points++;
