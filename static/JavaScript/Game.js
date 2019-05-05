@@ -1,5 +1,5 @@
 function Game() {
-    setTimeout(() => { new Audio('/static/Sounds/backgroundMusic.ogg').play(); }, 1000);
+    // setTimeout(() => { new Audio('/static/Sounds/backgroundMusic.ogg').play(); }, 1000);
     this.keyboard = new Keyboard();
     this.mouse = new Mouse();
     this.touch = new Touch();
@@ -61,6 +61,7 @@ function Game() {
         this.player.update(movementVector, aimVector, this.shots, this.enemies, this.collisions, this.bounds);
         this.shots.update(this.bounds);
         this.enemies.update(this.player, this.otherPlayers, this.shots, this.stats, this.collisions, this.bounds, this.ammo);
+        this.ammo.update(this.player, this.otherPlayers, this.collisions);
     };
 
     this.updateServer = () => {

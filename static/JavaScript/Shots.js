@@ -8,7 +8,7 @@ function Shots() {
     };
 
     this.getNewShot = (position, velocity) => {
-        new Audio('/static/Sounds/gun.wav').play();
+        new Audio('/static/Sounds/shot.mp3').play();
 
         return {
             position: position,
