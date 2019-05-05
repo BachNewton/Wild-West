@@ -34,6 +34,7 @@ function Player() {
         marginBottom: 0,
         speedMs: 100
     });
+    this.playersToRevive = [];
 
     this.playState = () => {
         switch (this.state) {
@@ -74,17 +75,53 @@ function Player() {
         };
     };
 
-    this.update = (movementVector, aimVector, shots, enemies, collisions, bounds) => {
+    this.update = (movementVector, aimVector, reviveAttempt, otherPlayers, shots, enemies, collisions, bounds) => {
         if (this.lives > 0) {
             this.updateMovement(movementVector, bounds);
             this.updateFiring(aimVector, shots);
             this.collisionCheck(enemies, collisions);
+
+            if (reviveAttempt) {
+                this.attemptToRevive(otherPlayers, collisions);
+            }
         } else {
             if (this.state !== this.STATE.DEAD) {
                 this.state = this.STATE.DEAD;
                 this.playState();
             }
         }
+    };
+
+    this.attemptToRevive = (otherPlayers, collisions) => {
+        var box1 = {
+            x: this.x,
+            y: this.y,
+            width: this.scale,
+            height: this.scale
+        };
+
+        for (var id in otherPlayers.players) {
+            var otherPlayer = otherPlayers.players[id];
+
+            if (otherPlayer.lives <= 0) {
+                var box2 = {
+                    x: otherPlayer.position.x,
+                    y: otherPlayer.position.y,
+                    width: otherPlayers.scale,
+                    height: otherPlayers.scale
+                };
+
+                if (collisions.isCollision(box1, box2)) {
+                    this.playersToRevive.push(id);
+                }
+            }
+        }
+    };
+
+    this.revive = () => {
+        this.lives = 1;
+        this.state = 0;
+        this.playState();
     };
 
     this.updateMovement = (movementVector, bounds) => {
@@ -176,15 +213,15 @@ function Player() {
             return;
         }
 
+        var box1 = {
+            x: this.x,
+            y: this.y,
+            width: this.scale,
+            height: this.scale
+        };
+
         for (var i = 0; i < enemies.enemies.length; i++) {
             var enemy = enemies.enemies[i];
-
-            var box1 = {
-                x: this.x,
-                y: this.y,
-                width: this.scale,
-                height: this.scale
-            };
 
             var box2 = {
                 x: enemy.position.x,
@@ -227,5 +264,11 @@ function Player() {
             state: this.state,
             drawPlayer: this.drawPlayer
         });
+
+        for (var id of this.playersToRevive) {
+            socket.emit('revive player', id);
+        }
+
+        this.playersToRevive = [];
     };
 }

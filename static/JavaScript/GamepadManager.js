@@ -26,6 +26,8 @@ function GamepadManager() {
             this.controller.leftStick.y = gamepad.axes[1];
             this.controller.rightStick.x = gamepad.axes[2];
             this.controller.rightStick.y = gamepad.axes[3];
+
+            this.controller.button.A = gamepad.buttons[0].pressed;
         }
     };
 

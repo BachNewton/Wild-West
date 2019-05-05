@@ -58,7 +58,8 @@ function Game() {
         this.touchUI.update(this.touch);
         var movementVector = this.getMovementVector() || this.gamepadManager.getMovementVector() || this.touchUI.getMovementVector();
         var aimVector = this.getAimVector() || this.gamepadManager.getAimVector() || this.touchUI.getAimVector();
-        this.player.update(movementVector, aimVector, this.shots, this.enemies, this.collisions, this.bounds);
+        var reviveAttempt = this.keyboard.held.KeyE || this.gamepadManager.controller.button.A;
+        this.player.update(movementVector, aimVector, reviveAttempt, this.otherPlayers, this.shots, this.enemies, this.collisions, this.bounds);
         this.shots.update(this.bounds);
         this.enemies.update(this.player, this.otherPlayers, this.shots, this.stats, this.collisions, this.bounds, this.ammo);
         this.ammo.update(this.player, this.otherPlayers, this.collisions);
@@ -229,6 +230,10 @@ function Game() {
 
     this.networking.socket.on('player update', (id, data) => {
         this.otherPlayers.update(id, data);
+    });
+
+    this.networking.socket.on('revive', () => {
+        this.player.revive();
     });
 
     this.networking.socket.on('player disconnected', (id) => {

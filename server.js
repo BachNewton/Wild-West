@@ -35,6 +35,10 @@ io.on('connection', (socket) => {
         socket.broadcast.emit('player update', socket.id, data);
     });
 
+    socket.on('revive player', (id) => {
+        io.sockets.sockets[id].emit('revive');
+    });
+
     socket.on('new shot', (position, velocity) => {
         socket.broadcast.emit('new shot', position, velocity);
     });
