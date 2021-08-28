@@ -1,0 +1,43 @@
+<html>
+
+<head>
+    <title></title>
+    <meta name="viewport" content="width=device-width, user-scalable=no">
+
+    <style>
+        body {
+            background-color: black;
+            color: white;
+            margin: 0px;
+            overflow: hidden;
+        }
+
+        iframe {
+            border-width: 0;
+            width: 320px;
+            height: 180px;
+        }
+    </style>
+</head>
+
+<body></body>
+
+<script>
+    const SCREENS = 30;
+
+    for (let i = 0; i < SCREENS; i++) {
+        let iframe = document.createElement('iframe');
+        iframe.setAttribute('name', 'iframe' + i);
+        document.body.appendChild(iframe);
+    }
+
+    for (let i = 0; i < SCREENS; i++) {
+        let link = document.createElement('a');
+        link.setAttribute('href', 'http://localhost:5000');
+        link.setAttribute('target', 'iframe' + i);
+        link.innerText = 'iframe' + i;
+        document.body.appendChild(link);
+    }
+</script>
+
+</html>

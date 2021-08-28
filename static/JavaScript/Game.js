@@ -98,12 +98,13 @@ function Game() {
 
     this.drawHUD = () => {
         const MARGIN = 5;
-        const HEIGHT = 35;
+        const HEIGHT = 20;
+        const FONT_SIZE = 10; // (30 * (window.innerHeight / 1080)).toFixed(0);
 
         this.ctx.fillStyle = 'grey';
         this.ctx.fillRect(0, 0, 160, HEIGHT);
 
-        this.ctx.font = '30px Arial';
+        this.ctx.font = FONT_SIZE + 'px Arial';
         this.ctx.textAlign = 'left';
         this.ctx.textBaseline = 'top';
         this.ctx.fillStyle = 'orange';
@@ -112,7 +113,7 @@ function Game() {
         this.ctx.fillStyle = 'grey';
         this.ctx.fillRect(this.canvas.width - 120, 0, 120, HEIGHT);
 
-        this.ctx.font = '30px Arial';
+        this.ctx.font = FONT_SIZE + 'px Arial';
         this.ctx.textAlign = 'right';
         this.ctx.textBaseline = 'top';
         this.ctx.fillStyle = 'orange';
@@ -121,7 +122,7 @@ function Game() {
         this.ctx.fillStyle = 'grey';
         this.ctx.fillRect(this.canvas.width / 2 - 100, 0, 200, HEIGHT);
 
-        this.ctx.font = '30px Arial';
+        this.ctx.font = FONT_SIZE + 'px Arial';
         this.ctx.textAlign = 'center';
         this.ctx.textBaseline = 'top';
         this.ctx.fillStyle = 'orange';
