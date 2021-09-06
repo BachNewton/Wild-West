@@ -20,34 +20,34 @@ server.listen(5000, () => {
     console.log('Starting server on port 5000');
 });
 
-io.on('connection', (socket) => {
-    socket.on('disconnect', () => {
-        console.log('Player disconnected with ID:', socket.id);
-        io.sockets.emit('player disconnected', socket.id);
-    });
+// io.on('connection', (socket) => {
+//     socket.on('disconnect', () => {
+//         console.log('Player disconnected with ID:', socket.id);
+//         io.sockets.emit('player disconnected', socket.id);
+//     });
 
-    socket.on('new player', () => {
-        console.log('New player connected with ID:', socket.id);
-        socket.broadcast.emit('restart');
-    });
+//     socket.on('new player', () => {
+//         console.log('New player connected with ID:', socket.id);
+//         socket.broadcast.emit('restart');
+//     });
 
-    socket.on('player update', (data) => {
-        socket.broadcast.emit('player update', socket.id, data);
-    });
+//     socket.on('player update', (data) => {
+//         socket.broadcast.emit('player update', socket.id, data);
+//     });
 
-    socket.on('revive player', (id) => {
-        io.sockets.sockets[id].emit('revive');
-    });
+//     socket.on('revive player', (id) => {
+//         io.sockets.sockets[id].emit('revive');
+//     });
 
-    socket.on('new shot', (position, velocity) => {
-        socket.broadcast.emit('new shot', position, velocity);
-    });
+//     socket.on('new shot', (position, velocity) => {
+//         socket.broadcast.emit('new shot', position, velocity);
+//     });
 
-    socket.on('new enemy', (position, type) => {
-        socket.broadcast.emit('new enemy', position, socket.id, type);
-    });
+//     socket.on('new enemy', (position, type) => {
+//         socket.broadcast.emit('new enemy', position, socket.id, type);
+//     });
 
-    socket.on('restart', () => {
-        socket.broadcast.emit('restart');
-    });
-});
+//     socket.on('restart', () => {
+//         socket.broadcast.emit('restart');
+//     });
+// });
