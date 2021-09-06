@@ -199,15 +199,15 @@ function Game() {
     this.getAimVector = () => {
         var vector = { x: 0, y: 0 };
 
-        if (this.keyboard.held.ArrowUp) {
+        if (this.keyboard.held.ArrowUp || this.keyboard.held.KeyU) {
             vector.y = -1;
-        } else if (this.keyboard.held.ArrowDown) {
+        } else if (this.keyboard.held.ArrowDown || this.keyboard.held.KeyJ) {
             vector.y = 1;
         }
 
-        if (this.keyboard.held.ArrowLeft) {
+        if (this.keyboard.held.ArrowLeft || this.keyboard.held.KeyH) {
             vector.x = -1;
-        } else if (this.keyboard.held.ArrowRight) {
+        } else if (this.keyboard.held.ArrowRight || this.keyboard.held.KeyK) {
             vector.x = 1;
         }
 

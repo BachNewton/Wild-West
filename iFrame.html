@@ -23,19 +23,29 @@
 <body></body>
 
 <script>
-    const SCREENS = 30;
+    const SCREENS = 6;
 
-    for (let i = 0; i < SCREENS; i++) {
-        let link = document.createElement('a');
-        link.setAttribute('href', 'http://localhost:5000');
-        link.setAttribute('target', 'iframe' + i);
-        link.innerText = 'iframe' + i;
-        document.body.appendChild(link);
-    }
+    // let button = document.createElement('button');
+    // button.addEventListener('click', () => {
+    //     for (let i = 0; i < SCREENS; i++) {
+    //         document.getElementByName('iframe' + i).contentWindow.location.reload();
+    //     }
+    // });
+    // button.innerText = 'Refresh all iFrames';
+    // document.body.appendChild(button);
+
+    // for (let i = 0; i < SCREENS; i++) {
+    //     let link = document.createElement('a');
+    //     link.setAttribute('href', 'http://localhost:5000');
+    //     link.setAttribute('target', 'iframe' + i);
+    //     link.innerText = 'iframe' + i;
+    //     document.body.appendChild(link);
+    // }
 
     for (let i = 0; i < SCREENS; i++) {
         let iframe = document.createElement('iframe');
         iframe.setAttribute('name', 'iframe' + i);
+        iframe.setAttribute('src', 'http://localhost:5000');
         document.body.appendChild(iframe);
     }
 </script>
