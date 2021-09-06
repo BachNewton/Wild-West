@@ -49,7 +49,7 @@ function Game() {
         }
 
         this.update();
-        this.updateServer();
+        // this.updateServer();
         this.draw();
     };
 
