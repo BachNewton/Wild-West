@@ -36,7 +36,7 @@ function Game() {
     });
 
     this.frame = () => {
-        window.requestAnimationFrame(this.frame);
+        // window.requestAnimationFrame(this.frame);
 
         // If the screen was touched withed with 3 fingers
         if (this.touch.isOn('2')) {
@@ -169,7 +169,8 @@ function Game() {
 
     this.startAnimating = () => {
         this.updateCanvasSize();
-        window.requestAnimationFrame(this.frame);
+        // window.requestAnimationFrame(this.frame);
+        setInterval(() => { this.frame() }, 16.6666667);
     };
 
     this.getMovementVector = () => {
